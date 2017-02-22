@@ -1,0 +1,3 @@
+rootProject.name = 'tystock'
+
+include ':app'
