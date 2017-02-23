@@ -22,7 +22,6 @@ import {
   EmptyView,
 } from '../../header';
 
-import AV from 'leancloud-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

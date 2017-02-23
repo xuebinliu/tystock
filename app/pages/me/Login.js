@@ -25,8 +25,6 @@ import {
 
 import ResetPassword from './ResetPassword';
 
-import AV from 'leancloud-storage';
-
 let account;
 let pwd;
 

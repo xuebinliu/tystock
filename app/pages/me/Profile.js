@@ -11,7 +11,6 @@ import{
     ScrollView,
     StyleSheet,
     NativeModules,
-    DeviceEventEmitter,
     PixelRatio,
 } from 'react-native';
 
@@ -25,9 +24,7 @@ import {
 
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AV from 'leancloud-storage';
 
-import ModifySex from './ModifySex';
 import ModifyText from './ModifyText';
 
 export default class Profile extends React.Component {
@@ -41,13 +38,13 @@ export default class Profile extends React.Component {
   }
 
   updateUserProfile= ()=>{
-    this.setState({
-      userinfo:AV.User.current(),
-    });
-
-    // 更新我的界面
-    const {route} = this.props;
-    route.callback();
+    // this.setState({
+    //   userinfo:AV.User.current(),
+    // });
+    //
+    // // 更新我的界面
+    // const {route} = this.props;
+    // route.callback();
   };
 
   onBackHandle= ()=>{

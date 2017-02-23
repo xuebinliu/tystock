@@ -27,7 +27,6 @@ import {
 } from '../../header';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AV from 'leancloud-storage';
 
 export default class UserInfo extends React.Component {
   constructor(props){
@@ -44,26 +43,26 @@ export default class UserInfo extends React.Component {
 
   componentDidMount(){
     const that = this;
-    AV.User.currentAsync().then((currentUser)=>{
-      if(currentUser) {
-        // 已登录,获取关注列表
-        var query = AV.User.current().followeeQuery();
-        query.include('followee');
-        query.find().then(function(followeeIds){
-          //关注的用户列表 followees
-          console.log('componentDidMount', followeeIds);
-          followeeIds.find(function (user) {
-            if(user.id == that.state.userData.id) {
-              that.setState({
-                isFollow:true,
-              });
-            }
-          })
-        });
-      } else {
-        console.log('componentDidMount not login');
-      }
-    });
+    // AV.User.currentAsync().then((currentUser)=>{
+    //   if(currentUser) {
+    //     // 已登录,获取关注列表
+    //     var query = AV.User.current().followeeQuery();
+    //     query.include('followee');
+    //     query.find().then(function(followeeIds){
+    //       //关注的用户列表 followees
+    //       console.log('componentDidMount', followeeIds);
+    //       followeeIds.find(function (user) {
+    //         if(user.id == that.state.userData.id) {
+    //           that.setState({
+    //             isFollow:true,
+    //           });
+    //         }
+    //       })
+    //     });
+    //   } else {
+    //     console.log('componentDidMount not login');
+    //   }
+    // });
   }
 
   onBackHandle= ()=> {
@@ -74,72 +73,72 @@ export default class UserInfo extends React.Component {
   // 发送私信
   onPressSendMessage= ()=>{
     const that = this;
-    AV.User.currentAsync().then((currentUser)=>{
-      if(currentUser) {
-          NativeModules.ReactProxy.openChat({
-            userId:currentUser.id,
-            avatar_url:currentUser.get('avatar_url'),
-            name:CommonUtil.getReadableUserName(currentUser)
-          },{
-            userId:that.state.userData.id,
-            avatar_url:that.state.userData.get('avatar_url'),
-            name:CommonUtil.getReadableUserName(that.state.userData)
-          });
-      } else {
-        const {navigator} = this.props;
-        navigator.push({
-          component:Login,
-        });
-      }
-    }).catch(function (error) {
-      console.log(error);
-    });
+    // AV.User.currentAsync().then((currentUser)=>{
+    //   if(currentUser) {
+    //       NativeModules.ReactProxy.openChat({
+    //         userId:currentUser.id,
+    //         avatar_url:currentUser.get('avatar_url'),
+    //         name:CommonUtil.getReadableUserName(currentUser)
+    //       },{
+    //         userId:that.state.userData.id,
+    //         avatar_url:that.state.userData.get('avatar_url'),
+    //         name:CommonUtil.getReadableUserName(that.state.userData)
+    //       });
+    //   } else {
+    //     const {navigator} = this.props;
+    //     navigator.push({
+    //       component:Login,
+    //     });
+    //   }
+    // }).catch(function (error) {
+    //   console.log(error);
+    // });
   };
 
   // 关注/取消关注
   onPressFollow= ()=>{
     const that = this;
-    AV.User.currentAsync().then((currentUser)=>{
-      if(currentUser) {
-        if(that.state.isFollow) {
-          // 取消关注
-          currentUser.unfollow(that.state.userData.id).then(function(){
-            toastShort('取消关注成功');
-            that.setState({
-              isFollow:false,
-            });
-          });
-        } else {
-          // 关注
-          currentUser.follow(that.state.userData.id).then(function(){
-            toastShort('关注成功');
-            that.setState({
-              isFollow:true,
-            });
-          });
-        }
-      } else {
-        const {navigator} = this.props;
-        navigator.push({
-          component:Login,
-        });
-      }
-    });
+    // AV.User.currentAsync().then((currentUser)=>{
+    //   if(currentUser) {
+    //     if(that.state.isFollow) {
+    //       // 取消关注
+    //       currentUser.unfollow(that.state.userData.id).then(function(){
+    //         toastShort('取消关注成功');
+    //         that.setState({
+    //           isFollow:false,
+    //         });
+    //       });
+    //     } else {
+    //       // 关注
+    //       currentUser.follow(that.state.userData.id).then(function(){
+    //         toastShort('关注成功');
+    //         that.setState({
+    //           isFollow:true,
+    //         });
+    //       });
+    //     }
+    //   } else {
+    //     const {navigator} = this.props;
+    //     navigator.push({
+    //       component:Login,
+    //     });
+    //   }
+    // });
   };
 
   // 点赞
   onPressSupport= ()=>{
-    AV.User.currentAsync().then((currentUser)=>{
-      if(currentUser) {
-
-      } else {
-        const {navigator} = this.props;
-        navigator.push({
-          component:Login,
-        });
-      }
-    }).catch(function (error) {
-    });
+    // AV.User.currentAsync().then((currentUser)=>{
+    //   if(currentUser) {
+    //
+    //   } else {
+    //     const {navigator} = this.props;
+    //     navigator.push({
+    //       component:Login,
+    //     });
+    //   }
+    // }).catch(function (error) {
+    // });
   };
 
   // 点击相册

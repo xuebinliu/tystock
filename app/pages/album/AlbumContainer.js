@@ -21,7 +21,6 @@ import {
 } from '../../header';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AV from 'leancloud-storage';
 import AlbumSetting from './AlbumSetting';
 import Album from './Album';
 

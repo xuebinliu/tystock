@@ -19,8 +19,6 @@ import {
     toastShort,
 } from '../../header';
 
-import AV from 'leancloud-storage';
-
 
 let email;
 
@@ -48,13 +46,13 @@ export default class ResetPassword extends React.Component{
       return;
     }
 
-    const that = this;
-    AV.User.requestPasswordReset(email).then(function (success) {
-      toastShort('重置邮件已经发送到您的邮箱');
-      that.onBackHandle();
-    }, function (error) {
-      toastShort('重置失败');
-    });
+    // const that = this;
+    // AV.User.requestPasswordReset(email).then(function (success) {
+    //   toastShort('重置邮件已经发送到您的邮箱');
+    //   that.onBackHandle();
+    // }, function (error) {
+    //   toastShort('重置失败');
+    // });
   }
 
   render(){

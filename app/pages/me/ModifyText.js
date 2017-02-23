@@ -16,8 +16,6 @@ import {
   toastShort,
 } from '../../header';
 
-import AV from 'leancloud-storage';
-
 let modifyKey;   // 要修改的key
 let value;
 
@@ -87,14 +85,14 @@ export default class ModifyText extends React.Component {
   };
 
   onSubmit= ()=>{
-    AV.User.current().set(modifyKey, value);
-    AV.User.current().save();
-
-    const {route} = this.props;
-    route.callback();
-
-    this.onBackHandle();
-    toastShort('提交成功');
+    // AV.User.current().set(modifyKey, value);
+    // AV.User.current().save();
+    //
+    // const {route} = this.props;
+    // route.callback();
+    //
+    // this.onBackHandle();
+    // toastShort('提交成功');
   };
 
   render(){

@@ -9,8 +9,6 @@ import Login from './pages/me/Login';
 import Feedback from './pages/me/Feedback';
 import About from './pages/me/About';
 import UserInfo from './pages/me/UserInfo';
-import Location from './pages/hall/Location';
-import Publish from './pages/Publish';
 import Profile from './pages/me/Profile';
 import Follows from './pages/me/Follows';
 import AlbumContainer from './pages/album/AlbumContainer';
@@ -38,8 +36,6 @@ export {
     Login,
     About,
     Feedback,
-    Location,
-    Publish,
     Profile,
     AlbumContainer,
     UserInfo,

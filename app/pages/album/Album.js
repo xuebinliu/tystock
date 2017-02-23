@@ -22,7 +22,6 @@ import {
   loaderHandler,
 } from '../../header';
 
-import AV from 'leancloud-storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 

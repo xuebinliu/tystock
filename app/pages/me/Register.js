@@ -20,10 +20,7 @@ import {
   naviGoBack,
   toastShort,
   CommonUtil,
-  Location,
 } from '../../header';
-
-import AV from 'leancloud-storage';
 
 let nickName;
 let account;

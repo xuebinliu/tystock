@@ -10,13 +10,10 @@ import{
 
 import {
     gstyles,
-    DeviceStorage,
     NavigationBar,
     naviGoBack,
     toastShort,
 } from '../../header';
-
-import AV from 'leancloud-storage';
 
 let feedbackContent;
 
