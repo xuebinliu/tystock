@@ -4,7 +4,18 @@
  */
 
 
+/*------------------ 账号相关 key ------------------*/
+// 账号信息
+export const ACCOUNT_USERINFO_KEY  = 'ACCOUNT_USERINFO_KEY';
 
+
+/*------------------ 事件订阅 key ------------------*/
+// 账号信息发生变化
+export const EMMIT_ACCOUNT_CHANGED = 'EMMIT_ACCOUNT_CHANGED';
+
+
+
+// 图标名称
 export const IC_NAV_BACK  = 'md-arrow-back';      // 后退
 export const IC_NAV_CHECK = 'md-checkmark';       // 确认
 

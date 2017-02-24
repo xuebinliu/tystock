@@ -18,8 +18,10 @@ import gstyles from './gstyles';
 import DeviceStorage from './utils/Storage';
 import {toastShort, toastLong} from './utils/ToastUtil';
 import {naviGoBack} from './utils/common';
+import log from './utils/logger';
 
 import * as CommonUtil from './utils/common';
+import * as Consts from './const';
 
 // widget
 import LoadingView from './widget/LoadingView';
@@ -32,28 +34,30 @@ import EmptyView from './widget/EmptyView';
 import BaseListViewComponent from './base/BaseListViewComponent';
 
 export {
-    Register,
-    Login,
-    About,
-    Feedback,
-    Profile,
-    AlbumContainer,
-    UserInfo,
-    Follows,
+  Register,
+  Login,
+  About,
+  Feedback,
+  Profile,
+  AlbumContainer,
+  UserInfo,
+  Follows,
 
-    gstyles,
-    DeviceStorage,
-    toastShort,
-    toastLong,
+  gstyles,
+  DeviceStorage,
+  toastShort,
+  toastLong,
+  log,
 
-    LoadingView,
-    NavigationBar,
-    BusyIndicator,
-    loaderHandler,
-    EmptyView,
+  LoadingView,
+  NavigationBar,
+  BusyIndicator,
+  loaderHandler,
+  EmptyView,
 
-    naviGoBack,
-    CommonUtil,
+  naviGoBack,
+  CommonUtil,
+  Consts,
 
-    BaseListViewComponent,
+  BaseListViewComponent,
 }

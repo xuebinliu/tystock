@@ -3,30 +3,34 @@
  *
  * 登陆界面
  */
-
 import React from 'react';
 import{
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    InteractionManager,
-    TextInput,
-    Alert,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  InteractionManager,
+  TextInput,
+  Alert,
   NativeModules,
+  DeviceEventEmitter,
 } from 'react-native';
 
 import {
-    gstyles,
-    NavigationBar,
-    naviGoBack,
-    toastShort,
-    Register,
+  gstyles,
+  NavigationBar,
+  toastShort,
+  Register,
+  DeviceStorage,
+  Consts,
+  log,
+  CommonUtil,
 } from '../../header';
 
 import * as QQAPI from 'react-native-qq';
 
 import ResetPassword from './ResetPassword';
+
 
 let account;
 let pwd;
@@ -37,19 +41,49 @@ export default class Login extends React.Component {
   }
 
   onBackHandle= ()=>{
-    console.log('onBackHandle');
-
     const {navigator} = this.props;
-    return naviGoBack(navigator);
+    return CommonUtil.naviGoBack(navigator);
   };
 
   onPressQQLogin= ()=>{
-    QQAPI.login('all').then(function (userInfo) {
-      console.log('get_simple_userinfo', userInfo);
+    const that = this;
+    QQAPI.login('get_simple_userinfo').then(function (userInfo) {
+      /* 获取到userinfo的定义
+       {
+       expires_in: 1487853159797,
+       oauth_consumer_key: '1106004972',
+       access_token: '911552B8187F77B8DAE2D9E8F3F68134',
+       openid: '517847405C7A5AEFE0B6EF439A492EA9',
+       errCode: 0
+       }
+       */
+      log('get_simple_userinfo', userInfo);
 
-      NativeModules.QQAPI.updateUserInfo(function (info) {
-        console.log(info);
+      userInfo.isQQLogin = true;
+
+      DeviceStorage.save(Consts.ACCOUNT_USERINFO_KEY, userInfo).then(function () {
+        DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
       });
+
+      // 获取QQ登陆的用户名和头像url
+      NativeModules.QQAPI.updateUserInfo(function (avatar_url, nickname) {
+        log('QQAPI updateUserInfo', nickname, avatar_url);
+        DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, {
+          nickname:nickname,
+          avatar_url:avatar_url
+        }).then(function () {
+          DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
+        });
+      });
+
+      toastShort('登陆成功');
+
+      that.onBackHandle();
+
+    }, function (err) {
+      log('QQAPI login err', err);
+
+      toastShort('QQ登陆失败了');
     });
   };
 
@@ -123,17 +157,12 @@ export default class Login extends React.Component {
               </Text>
             </TouchableOpacity>
           </View>
-
-
           <TouchableOpacity onPress={this.onPressLogin} style={[gstyles.button, {marginTop:30}]}>
             <Text style={{color:'white'}} >登陆</Text>
           </TouchableOpacity>
-
         </View>
 
       </View>
     );
   }
 }
-
-
