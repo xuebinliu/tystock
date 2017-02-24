@@ -57,20 +57,10 @@ export default class Center extends React.Component {
   // 点击登录
   onLogin= ()=>{
     const {navigator} = this.props;
-    // AV.User.currentAsync().then((currentUser)=>{
-    //   if(currentUser) {
-    //     navigator.push({
-    //       component: Profile,
-    //       callback: this.updateUserState,
-    //     });
-    //   } else {
-    //     // go login
-    //     navigator.push({
-    //       component: Login,
-    //       callback: this.updateUserState,
-    //     });
-    //   }
-    // });
+    // go login
+    navigator.push({
+      component: Login,
+    });
   };
 
   // 建议

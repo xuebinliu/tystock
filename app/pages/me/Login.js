@@ -13,6 +13,7 @@ import{
     InteractionManager,
     TextInput,
     Alert,
+  NativeModules,
 } from 'react-native';
 
 import {
@@ -22,6 +23,8 @@ import {
     toastShort,
     Register,
 } from '../../header';
+
+import * as QQAPI from 'react-native-qq';
 
 import ResetPassword from './ResetPassword';
 
@@ -35,8 +38,19 @@ export default class Login extends React.Component {
 
   onBackHandle= ()=>{
     console.log('onBackHandle');
+
     const {navigator} = this.props;
     return naviGoBack(navigator);
+  };
+
+  onPressQQLogin= ()=>{
+    QQAPI.login('all').then(function (userInfo) {
+      console.log('get_simple_userinfo', userInfo);
+
+      NativeModules.QQAPI.updateUserInfo(function (info) {
+        console.log(info);
+      });
+    });
   };
 
   // register
@@ -60,23 +74,7 @@ export default class Login extends React.Component {
       Alert.alert('提示', '亲, 请输入密码');
       return;
     }
-
-    const that = this;
-    AV.User.logIn(account, pwd).then(function (loginedUser) {
-      console.log('onPressLogin sucess');
-
-      // refresh center ui
-      const {route} = that.props;
-      if(route.callback){
-        route.callback();
-      }
-
-      toastShort('登陆成功');
-      that.onBackHandle();
-    }, function (error) {
-      toastShort('用户名或密码错误');
-    });
-  }
+  };
 
   onPressReset(){
     const {navigator} = this.props;
@@ -100,7 +98,15 @@ export default class Login extends React.Component {
         />
 
         <View style={gstyles.content}>
-          <TextInput autoFocus={true} onChangeText={(text)=> account=text} style={[gstyles.input, {marginTop: 20}]} placeholder={"邮箱/手机号"}/>
+
+          <View style={{marginTop:40, alignItems:'center'}}>
+              <TouchableOpacity onPress={this.onPressQQLogin}>
+                <Image source={require('../../img/ic_login_weixin.png')} style={{width:50,height:50}}/>
+              </TouchableOpacity>
+            <Text style={{fontSize:13, marginTop:5, color:'#777'}}>QQ登录</Text>
+          </View>
+
+          <TextInput autoFocus={true} onChangeText={(text)=> account=text} style={[gstyles.input, {marginTop: 40}]} placeholder={"邮箱/手机号"}/>
 
           <TextInput onChangeText={(text)=> pwd=text} secureTextEntry={true} style={gstyles.input} placeholder={"密码"}/>
 
@@ -122,15 +128,6 @@ export default class Login extends React.Component {
           <TouchableOpacity onPress={this.onPressLogin} style={[gstyles.button, {marginTop:30}]}>
             <Text style={{color:'white'}} >登陆</Text>
           </TouchableOpacity>
-
-          <View style={{marginTop:70,alignItems:'center'}}>
-            <Text style={{fontSize:13,color:'#777'}}>------------第三方账号登录------------</Text>
-            <View style={{flexDirection:'row',marginTop:20}}>
-              <TouchableOpacity>
-                <Image source={require('../../img/ic_login_weixin.png')} style={{width:50,height:50}}/>
-              </TouchableOpacity>
-            </View>
-          </View>
 
         </View>
 
