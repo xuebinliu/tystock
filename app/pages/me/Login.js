@@ -28,7 +28,7 @@ import {
 } from '../../header';
 
 import * as QQAPI from 'react-native-qq';
-
+import UserComm from './UserComm';
 import ResetPassword from './ResetPassword';
 
 
@@ -48,41 +48,46 @@ export default class Login extends React.Component {
   onPressQQLogin= ()=>{
     const that = this;
     QQAPI.login('get_simple_userinfo').then(function (userInfo) {
-      /* 获取到userinfo的定义
-       {
-       expires_in: 1487853159797,
-       oauth_consumer_key: '1106004972',
-       access_token: '911552B8187F77B8DAE2D9E8F3F68134',
-       openid: '517847405C7A5AEFE0B6EF439A492EA9',
-       errCode: 0
-       }
-       */
-      log('get_simple_userinfo', userInfo);
+      log('Login get_simple_userinfo', userInfo);
 
-      userInfo.isQQLogin = true;
+      if(userInfo.errCode != 0) {
+        toastShort('获取登陆信息失败');
+        return;
+      }
 
+      // 保存基本信息到cache
       DeviceStorage.save(Consts.ACCOUNT_USERINFO_KEY, userInfo).then(function () {
         DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
+
+        // 保存到服务器
+        UserComm.qqlogin(userInfo, function (err, rsp) {
+
+        });
       });
 
       // 获取QQ登陆的用户名和头像url
-      NativeModules.QQAPI.updateUserInfo(function (avatar_url, nickname) {
-        log('QQAPI updateUserInfo', nickname, avatar_url);
+      NativeModules.QQAPI.updateUserInfo(function (avatar_url, username) {
+        log('QQAPI updateUserInfo', username, avatar_url);
+
+        if(!avatar_url || !username) {
+          return;
+        }
+
+        // 保存基本信息到cache
         DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, {
-          nickname:nickname,
+          username:username,
           avatar_url:avatar_url
         }).then(function () {
           DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
+
+          // 保存到服务器
         });
       });
 
       toastShort('登陆成功');
-
       that.onBackHandle();
-
     }, function (err) {
       log('QQAPI login err', err);
-
       toastShort('QQ登陆失败了');
     });
   };
@@ -98,7 +103,7 @@ export default class Login extends React.Component {
   };
 
   onPressLogin= ()=>{
-    console.log('onPressLogin', account, pwd);
+    log('onPressLogin', account, pwd);
     if(account == undefined || account.length < 1) {
       Alert.alert('提示', '亲, 请输入账号');
       return;
