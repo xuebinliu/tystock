@@ -14,7 +14,11 @@ import {
   NavigationBar,
   naviGoBack,
   toastShort,
+  DeviceStorage,
+  Consts,
 } from '../../header';
+
+import UserComm from './UserComm';
 
 let modifyKey;   // 要修改的key
 let value;
@@ -85,14 +89,21 @@ export default class ModifyText extends React.Component {
   };
 
   onSubmit= ()=>{
-    // AV.User.current().set(modifyKey, value);
-    // AV.User.current().save();
-    //
-    // const {route} = this.props;
-    // route.callback();
-    //
-    // this.onBackHandle();
-    // toastShort('提交成功');
+    let data;
+    if(modifyKey == 'nickname'){
+      data = {
+        nickname:value,
+      };
+    }
+
+    if(!data) return;
+
+    const that = this;
+    DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, data).then(function () {
+      UserComm.updateUserInfo(data);
+      toastShort('修改成功');
+      that.onBackHandle();
+    });
   };
 
   render(){

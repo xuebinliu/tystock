@@ -109,7 +109,6 @@ export default class Login extends React.Component {
           avatar_url:avatar_url
         }).then(function () {
           log('QQAPI updateUserInfo new user save local cache ok');
-          DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
           // 保存到服务器
           UserComm.updateUserInfo({
             nickname:nickname,
@@ -127,7 +126,6 @@ export default class Login extends React.Component {
             avatar_url:avatar_url
           }).then(function () {
             log('QQAPI updateUserInfo save local cache ok');
-            DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
             // 保存到服务器
             UserComm.updateUserInfo({
               nickname:nickname,

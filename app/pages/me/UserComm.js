@@ -4,6 +4,8 @@
  * 用户信息和后台交互
  */
 
+import {DeviceEventEmitter} from 'react-native';
+
 import {
   DeviceStorage,
   Consts,
@@ -35,11 +37,11 @@ export default UserComm = {
         }
       })
     }).then((response) => {
-      log('qqlogin response', response);
+      log('UserComm qqlogin response', response);
       callback(null, response);
     }).catch((error) => {
       callback(error, null);
-      log('qqlogin err', error);
+      log('UserComm qqlogin err', error);
     });
   },
 
@@ -48,7 +50,7 @@ export default UserComm = {
    * @param params 需要更新的字段
    */
   updateUserInfo(params) {
-    log('updateUserInfo userInfo', ', params', params);
+    log('UserComm updateUserInfo', ', params', params);
 
     DeviceStorage.get(Consts.ACCOUNT_USERINFO_KEY).then(function (userInfo) {
       // 保存到服务器
@@ -63,9 +65,11 @@ export default UserComm = {
         },
         body: JSON.stringify(params)
       }).then(function (rsp) {
-        log('updateUserInfo', rsp);
+        log('UserComm updateUserInfo rsp', rsp);
+        // 保存服务器成功，通知UI
+        DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
       }).catch(function (err) {
-        log(err);
+        log('UserComm err', err);
       });
     });
   },

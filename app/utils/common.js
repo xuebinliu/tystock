@@ -66,31 +66,25 @@ export function getUserNickName(userInfo) {
   }
 }
 
-export function getUserFromServer(userId) {
-  return new Promise(function (resolve, reject) {
-    var query = new AV.Query('_User');
-
-    // 时间排序 0降序 1升序
-    if(filterObj.time == 0) {
-      query.descending('createdAt');
-    } else if(filterObj.time == 1) {
-      query.ascending('createdAt');
-    } else {
-    }
-
-    // 一次最多返回条条数
-    query.limit(20);
-
-    // 跳过的条目数
-    query.skip(index);
-
-    // 选定返回字段
-    // query.select(['nickname:', 'mind', 'avatar_url']);
-
-    query.find().then(function (data) {
-      return resolve(data);
-    }).catch(function (error) {
-      reject(error);
-    });
+/**
+ * 给服务器上传文件
+ * @param file {uri: image.path, type: 'multipart/form-data', name: 'avatar.png'};
+ * @param callback
+ */
+export function uploadFile2Server(file, callback) {
+  fetch('http://192.168.0.183:8080/whale/test/upload_files', {
+    method:'POST',
+    headers:{
+      'Content-Type':'multipart/form-data',
+    },
+    body:file,
+  }).then((response) => {
+    response.text();
+  }).then((responseData)=>{
+    console.log('responseData',responseData);
+    callback(responseData);
+  }).catch((error)=>{
+    console.error('error',error);
+    callback();
   });
 }

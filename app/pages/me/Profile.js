@@ -10,8 +10,8 @@ import{
   Image,
   ScrollView,
   StyleSheet,
-  NativeModules,
   PixelRatio,
+  DeviceEventEmitter,
 } from 'react-native';
 
 import {
@@ -28,24 +28,41 @@ import {
 
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as QQAPI from 'react-native-qq';
 
 import ModifyText from './ModifyText';
 
 export default class Profile extends React.Component {
-
   constructor(props){
     super(props);
 
     this.state = {
       userInfo:null,
     };
+  }
 
-    this.updateUserInfo();
+  componentDidMount() {
+    const that = this;
+
+    // 注册账号变化监听
+    this.accountSub = DeviceEventEmitter.addListener(Consts.EMMIT_ACCOUNT_CHANGED, function () {
+      that.updateUserInfo();
+    });
+
+    // 首次拉取用户信息
+    that.updateUserInfo();
+  }
+
+  componentWillUnmount() {
+    if(this.accountSub) {
+      this.accountSub.remove();
+    }
   }
 
   updateUserInfo= ()=> {
     const that = this;
     DeviceStorage.get(Consts.ACCOUNT_USERINFO_KEY).then(function (userInfo) {
+      log('Profile updateUserInfo', userInfo);
       that.setState({
         userInfo:userInfo
       });
@@ -57,19 +74,20 @@ export default class Profile extends React.Component {
     return naviGoBack(navigator);
   };
 
+  // 退出登陆
   onLogout= ()=>{
-    toastShort('退出登录成功');
+    QQAPI.logout();
 
-    // 更新我的界面
-    const {route} = this.props;
-    route.callback();
-
-    this.onBackHandle();
+    const that = this;
+    DeviceStorage.delete(Consts.ACCOUNT_USERINFO_KEY).then(function () {
+      // 更新我的界面
+      DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
+      toastShort('退出登录成功');
+      that.onBackHandle();
+    });
   };
 
   onModifyHead= ()=>{
-    const that = this;
-
     // 获取头像
     ImagePicker.openPicker({
       width: parseInt(120 * PixelRatio.get()),
@@ -79,27 +97,17 @@ export default class Profile extends React.Component {
       // 上传前，显示加载框
       loaderHandler.showLoader('正在上传...');
 
-      // save to server via native
-      NativeModules.FileUpload.upload(image.path, function (error, url) {
+      let file = {uri: image.path, type: 'multipart/form-data', name: 'avatar.png'};
+
+      CommonUtil.uploadFile2Server(file, function (rsp) {
         // 取消加载框
         loaderHandler.hideLoader();
 
-        if(!error){
-          console.log('upload avatar failed', error);
-          toastShort('更改头像失败');
-          return;
+        if(rsp) {
+          // 上传成功 保存头像到userInfo
+        } else {
+          // 上传失败
         }
-
-        // 头像上传成功后，把url地址保存到User中
-
-        // 更新当前界面
-        that.forceUpdate();
-
-        // 更新上一级界面（我的）
-
-        toastShort('更改头像成功');
-
-        log("onModifyHead success avatar url=", url);
       });
     }).catch((e)=>{
       log('onModifyHead e', e);
@@ -115,13 +123,12 @@ export default class Profile extends React.Component {
     });
   };
 
-
   onModifySex= ()=>{
-    const {navigator} = this.props;
-    navigator.push({
-      component: ModifySex,
-      callback:this.updateUserProfile
-    });
+    // const {navigator} = this.props;
+    // navigator.push({
+    //   component: ModifySex,
+    //   callback:this.updateUserProfile
+    // });
   };
 
   getSex= ()=>{
