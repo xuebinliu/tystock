@@ -108,7 +108,7 @@ export default class Login extends React.Component {
           nickname:nickname,
           avatar_url:avatar_url
         }).then(function () {
-          log('QQAPI updateUserInfo save local cache ok');
+          log('QQAPI updateUserInfo new user save local cache ok');
           DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
           // 保存到服务器
           UserComm.updateUserInfo({
@@ -117,6 +117,27 @@ export default class Login extends React.Component {
           });
         });
       });
+    } else if(type == 200) {
+      // QQ第三方登陆的老用户没有头像和昵称，则获取QQ登陆的用户名和头像url
+      if(!userInfo.avatar_url || !userInfo.nickname) {
+        NativeModules.QQAPI.updateUserInfo(function (avatar_url, nickname) {
+          log('Login QQAPI old user updateUserInfo', nickname, avatar_url);
+          DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, {
+            nickname:nickname,
+            avatar_url:avatar_url
+          }).then(function () {
+            log('QQAPI updateUserInfo save local cache ok');
+            DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
+            // 保存到服务器
+            UserComm.updateUserInfo({
+              nickname:nickname,
+              avatar_url:avatar_url,
+            });
+          }, function (err) {
+            log('Login QQAPI updateUserInfo', err);
+          });
+        });
+      }
     }
   };
 
@@ -168,7 +189,7 @@ export default class Login extends React.Component {
 
           <View style={{marginTop:40, alignItems:'center'}}>
               <TouchableOpacity onPress={this.onPressQQLogin}>
-                <Image source={require('../../img/ic_login_weixin.png')} style={{width:50,height:50}}/>
+                <Image source={require('../../img/login_icon_qq.png')} style={{width:50,height:50}}/>
               </TouchableOpacity>
             <Text style={{fontSize:13, marginTop:5, color:'#777'}}>QQ登录</Text>
           </View>

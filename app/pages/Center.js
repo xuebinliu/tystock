@@ -11,7 +11,6 @@ import {
   StyleSheet,
   Image,
   DeviceEventEmitter,
-  NativeModules,
 } from 'react-native';
 
 import {
@@ -22,8 +21,6 @@ import {
   About,
   DeviceStorage,
   Profile,
-  AlbumContainer,
-  Follows,
   CommonUtil,
   Consts,
   log,
@@ -58,22 +55,6 @@ export default class Center extends React.Component {
     DeviceStorage.get(Consts.ACCOUNT_USERINFO_KEY).then(function (userInfo) {
       log('Center init userinfo', userInfo);
       if(userInfo) {
-        if(!userInfo.avatar_url && userInfo.openid) {
-          // 获取QQ登陆的用户名和头像url
-          log('Center get updateUserInfo');
-          NativeModules.QQAPI.updateUserInfo(function (avatar_url, nickname) {
-            log('Center QQAPI updateUserInfo', nickname, avatar_url);
-            DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, {
-              nickname:nickname,
-              avatar_url:avatar_url
-            }).then(function () {
-              DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
-            }, function (err) {
-              log('Center QQAPI updateUserInfo', err);
-            });
-          });
-        }
-
         that.setState({
           userInfo:userInfo
         });
@@ -82,14 +63,27 @@ export default class Center extends React.Component {
   }
 
   componentWillUnmount() {
-    this.accountSub.remove();
+    if(this.accountSub) {
+      this.accountSub.remove();
+    }
   }
 
   // 点击登录
   onLogin= ()=>{
     const {navigator} = this.props;
-    navigator.push({
-      component: Login,
+    DeviceStorage.get(Consts.ACCOUNT_USERINFO_KEY).then(function (userInfo) {
+      log('Center init userinfo', userInfo);
+      if(userInfo) {
+        // 已登陆，去个人信息页面
+        navigator.push({
+          component: Profile,
+        });
+      } else {
+        // 未登录,去登陆页面
+        navigator.push({
+          component: Login,
+        });
+      }
     });
   };
 
@@ -123,15 +117,6 @@ export default class Center extends React.Component {
     }
   };
 
-  renderNickName= ()=>{
-    let nickname = '未登录';
-    if(this.state.userInfo && this.state.userInfo.nickname) {
-      nickname = this.state.userInfo.nickname;
-    }
-    log('renderNickName', nickname);
-    return (<Text>{nickname}</Text>);
-  };
-
   render() {
     return (
         <View style={gstyles.container}>
@@ -145,7 +130,7 @@ export default class Center extends React.Component {
               <View style={[gstyles.listItem, {flexDirection:'row', height:70, marginTop:15, position:'relative'}]}>
                 {this.renderAvatar()}
                 <View style={{flexDirection:'column', justifyContent:'center', marginLeft:10}}>
-                  {this.renderNickName()}
+                  <Text>{CommonUtil.getUserNickName(this.state.userInfo)}</Text>
                 </View>
                 <View style={{flexDirection:'row', flex:1, justifyContent:'flex-end'}}>
                   <Ionicons name="ios-arrow-forward" size={20} color="gray" style={{alignSelf:'center', marginRight:15}}/>

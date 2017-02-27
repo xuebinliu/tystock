@@ -121,7 +121,7 @@ export default class Follows extends React.Component {
                  resizeMode="stretch"
                  source={{uri:rowData.attributes.avatar_url}}/>
           <View style={{flex:1}}>
-            <Text>{CommonUtil.getReadableUserName(rowData)}</Text>
+            <Text>{CommonUtil.getUserNickName(rowData)}</Text>
             <Text>{rowData.attributes.mind}</Text>
           </View>
           <Ionicons name="ios-arrow-forward" size={20} color="gray" style={{marginHorizontal:10}}/>

@@ -51,14 +51,18 @@ export function getCityList() {
 
 /**
  * 获取可读的用户名，查不到昵称就用账号
- * @param user
+ * @param userInfo
  */
-export function getReadableUserName(user) {
-  let nickname = user.get('nickname');
+export function getUserNickName(userInfo) {
+  if(!userInfo) {
+    return '未登录';
+  }
+
+  let nickname = userInfo.nickname;
   if(nickname) {
     return nickname;
   } else {
-    return user.getUsername();
+    return '未设置';
   }
 }
 

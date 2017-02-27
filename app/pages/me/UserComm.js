@@ -11,7 +11,6 @@ import {
 } from '../../header';
 
 export default UserComm = {
-
   /**
    * qq三方登陆 response.status 200 old user, 201 new user
    * @param userInfo

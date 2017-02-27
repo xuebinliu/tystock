@@ -78,11 +78,11 @@ export default class UserInfo extends React.Component {
     //       NativeModules.ReactProxy.openChat({
     //         userId:currentUser.id,
     //         avatar_url:currentUser.get('avatar_url'),
-    //         name:CommonUtil.getReadableUserName(currentUser)
+    //         name:CommonUtil.getUserNickName(currentUser)
     //       },{
     //         userId:that.state.userData.id,
     //         avatar_url:that.state.userData.get('avatar_url'),
-    //         name:CommonUtil.getReadableUserName(that.state.userData)
+    //         name:CommonUtil.getUserNickName(that.state.userData)
     //       });
     //   } else {
     //     const {navigator} = this.props;
