@@ -4,13 +4,11 @@
 
 
 // pages
-import Register from './pages/me/Register';
 import Login from './pages/me/Login';
 import Feedback from './pages/me/Feedback';
 import About from './pages/me/About';
 import UserInfo from './pages/me/UserInfo';
 import Profile from './pages/me/Profile';
-import Follows from './pages/me/Follows';
 import AlbumContainer from './pages/album/AlbumContainer';
 
 // utils
@@ -34,14 +32,12 @@ import EmptyView from './widget/EmptyView';
 import BaseListViewComponent from './base/BaseListViewComponent';
 
 export {
-  Register,
   Login,
   About,
   Feedback,
   Profile,
   AlbumContainer,
   UserInfo,
-  Follows,
 
   gstyles,
   DeviceStorage,

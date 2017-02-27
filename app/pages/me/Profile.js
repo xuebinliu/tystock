@@ -12,6 +12,7 @@ import{
   StyleSheet,
   PixelRatio,
   DeviceEventEmitter,
+  NativeModules,
 } from 'react-native';
 
 import {
