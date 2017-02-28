@@ -27,9 +27,10 @@ import {
 
 import * as QQAPI from 'react-native-qq';
 import UserComm from './UserComm';
+import Register from './Register';
 
-let phoneNumber;
-let verifyCode;
+let account;
+let pwd;
 
 export default class Login extends React.Component {
   constructor(props){
@@ -136,15 +137,43 @@ export default class Login extends React.Component {
   };
 
   onPressLogin= ()=>{
-    log('onPressLogin', phoneNumber, verifyCode);
-    if(!phoneNumber) {
-      Alert.alert('提示', '亲, 请输入正确的手机号');
+    log('onPressLogin', account, pwd);
+    if(!account || account.length == 0) {
+      Alert.alert('提示', '亲, 请输入手机号');
       return;
     }
-    if(!verifyCode) {
-      Alert.alert('提示', '亲, 请输入正确的验证码');
+    if(!pwd || pwd.length == 0) {
+      Alert.alert('提示', '亲, 请输入验证码');
       return;
     }
+
+    const that = this;
+    UserComm.accountLogin(account, pwd, function (err, rsp) {
+      if(err) {
+        toastShort('登陆失败，请重试');
+        return;
+      }
+      if(rsp.status == 200) {
+        // login success
+        rsp.json().then(function (userInfo) {
+          DeviceStorage.save(Consts.ACCOUNT_USERINFO_KEY, userInfo).then(function () {
+            DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
+            toastShort('恭喜您登陆成功');
+            that.onBackHandle();
+          });
+        })
+      } else {
+        toastShort('登陆失败，请检查账号和密码');
+      }
+    });
+  };
+
+  // register
+  onPressRegister= ()=>{
+    const {navigator} = this.props;
+    navigator.push({
+      component: Register,
+    });
   };
 
   render() {
@@ -154,32 +183,31 @@ export default class Login extends React.Component {
             title={'登陆'}
             leftButtonIcon="md-arrow-back"
             onLeftButtonPress={this.onBackHandle}
-        />
+            rightButtonTitle={"注册"}
+            rightButtonTitleColor={'white'}
+            onRightButtonPress={this.onPressRegister}/>
 
         <View style={gstyles.content}>
 
-          <View style={{marginTop:40, alignItems:'center'}}>
+          <View style={{marginTop:30, alignItems:'center'}}>
               <TouchableOpacity onPress={this.onPressQQLogin}>
                 <Image source={require('../../img/login_icon_qq.png')} style={{width:50,height:50}}/>
               </TouchableOpacity>
             <Text style={{fontSize:13, marginTop:5, color:'#777'}}>QQ登录</Text>
           </View>
 
-          <TextInput autoFocus={true} onChangeText={(text)=> phoneNumber=text}
-                     keyboardType="numeric"
-                     style={[gstyles.input, {marginTop: 40}]}
-                     placeholder={"请输入手机号"}/>
+          <TextInput autoFocus={true} onChangeText={(text)=> account=text} style={[gstyles.input, {marginTop: 20}]} placeholder={"邮箱/手机号"}/>
 
-          <View style={{flexDirection:'row', marginTop:15, }}>
-            <TextInput onChangeText={(text)=> verifyCode=text}
-                       keyboardType="numeric"
-                       style={gstyles.input}
-                       placeholder={"验证码"}/>
-            <TouchableOpacity
-                              style={[gstyles.button, {marginTop:30}]}>
-              <Text style={{color:'white'}}>获取验证码</Text>
+          <TextInput onChangeText={(text)=> pwd=text} secureTextEntry={true} style={gstyles.input} placeholder={"密码"}/>
+
+          <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:15, }}>
+            <TouchableOpacity onPress={this.onPressRegister}>
+              <Text style={{color:'blue', alignSelf:'flex-start', marginLeft:15}}>
+                注册
+              </Text>
             </TouchableOpacity>
           </View>
+
           <TouchableOpacity onPress={this.onPressLogin} style={[gstyles.button, {marginTop:30}]}>
             <Text style={{color:'white'}} >登陆</Text>
           </TouchableOpacity>

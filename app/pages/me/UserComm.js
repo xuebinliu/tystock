@@ -13,6 +13,62 @@ import {
 } from '../../header';
 
 export default UserComm = {
+
+  /**
+   * 账号密码登陆
+   * @param account
+   * @param pwd
+   * @param callback
+   */
+  accountLogin(account, pwd, callback) {
+    let url = '?username=' + account + '&password=' +pwd;
+    log('UserComm accountLogin url=', url);
+    fetch(Consts.BMOB_API_URL + '/1/login' + url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-Bmob-Application-Id':Consts.BMOB_APP_ID,
+        'X-Bmob-REST-API-Key':Consts.BMOB_APP_KEY,
+      },
+    }).then((response) => {
+      log('UserComm accountLogin response', response);
+      callback(null, response);
+    }).catch((error) => {
+      callback(error, null);
+      log('UserComm accountLogin err', error);
+    });
+  },
+
+  /**
+   * 注册账号
+   * @param account
+   * @param pwd
+   * @param nickname
+   * @param callback
+   */
+  register(account, pwd, callback) {
+    fetch(Consts.BMOB_API_URL + '/1/users', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-Bmob-Application-Id':Consts.BMOB_APP_ID,
+        'X-Bmob-REST-API-Key':Consts.BMOB_APP_KEY,
+      },
+      body: JSON.stringify({
+        username:account,
+        password:pwd,
+      })
+    }).then((response) => {
+      log('UserComm register response', response);
+      callback(null, response);
+    }).catch((error) => {
+      callback(error, null);
+      log('UserComm register err', error);
+    });
+  },
+
   /**
    * qq三方登陆 response.status 200 old user, 201 new user
    * @param userInfo
@@ -71,6 +127,63 @@ export default UserComm = {
       }).catch(function (err) {
         log('UserComm err', err);
       });
+    });
+  },
+
+  /**
+   * 请求验证码
+   * @param phoneNumber
+   * @param callback
+   */
+  requestSms(phoneNumber, callback) {
+    log('UserComm requestSms', phoneNumber);
+    fetch(Consts.BMOB_API_URL + '/1/requestSms', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-Bmob-Application-Id':Consts.BMOB_APP_ID,
+        'X-Bmob-REST-API-Key':Consts.BMOB_APP_KEY,
+      },
+      body: JSON.stringify({
+        mobilePhoneNumber:phoneNumber,
+        content:'欢迎登陆量子选股，您的验证码是：',
+      })
+    }).then((response) => {
+      log('UserComm phoneLogin qqlogin response', response);
+      callback(null, response);
+    }).catch((error) => {
+      callback(error, null);
+      log('UserComm phoneLogin qqlogin err', error);
+    });
+  },
+
+  /**
+   * 手机号验证码登陆
+   * @param phoneNumber
+   * @param smsCode
+   * @param callback
+   */
+  phoneLogin(phoneNumber, smsCode, callback) {
+    log('UserComm phoneLogin', phoneNumber, smsCode);
+    fetch(Consts.BMOB_API_URL + '/1/users', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-Bmob-Application-Id':Consts.BMOB_APP_ID,
+        'X-Bmob-REST-API-Key':Consts.BMOB_APP_KEY,
+      },
+      body: JSON.stringify({
+        mobilePhoneNumber:phoneNumber,
+        smsCode:smsCode,
+      })
+    }).then((response) => {
+      log('UserComm phoneLogin qqlogin response', response);
+      callback(null, response);
+    }).catch((error) => {
+      callback(error, null);
+      log('UserComm phoneLogin qqlogin err', error);
     });
   },
 }

@@ -58,12 +58,11 @@ export function getUserNickName(userInfo) {
     return '未登录';
   }
 
-  let nickname = userInfo.nickname;
-  if(nickname) {
-    return nickname;
-  } else {
-    return '未设置';
-  }
+  if(userInfo.nickname) return userInfo.nickname;
+
+  if(userInfo.username) return userInfo.username;
+
+  return '未设置';
 }
 
 /**
