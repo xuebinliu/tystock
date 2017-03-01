@@ -25,9 +25,10 @@ import {
   CommonUtil,
 } from '../../header';
 
-import * as QQAPI from 'react-native-qq';
+// import * as QQAPI from 'react-native-qq';
 import UserComm from './UserComm';
 import Register from './Register';
+import QQLogin from '../../utils/QQLogin';
 
 let account;
 let pwd;
@@ -44,33 +45,33 @@ export default class Login extends React.Component {
 
   onPressQQLogin= ()=>{
     const that = this;
-    QQAPI.login('get_simple_userinfo').then(function (userInfo) {
-      log('Login get_simple_userinfo', userInfo);
+    QQLogin.login().then(function (data) {
+      log('QQLogin ', data);
 
-      if(!userInfo || userInfo.errCode != 0) {
+      if(!data) {
         toastShort('获取登陆信息失败, 请重试');
         return;
       }
 
       // 登陆
-      UserComm.qqlogin(userInfo, function (err, rsp) {
-        if(err){
-          toastShort('获取服务器失败, 请重试');
-          return;
-        }
-
-        if(rsp.status == 200) {
-          rsp.json().then(function (userInfo) {
-            log('qqlogin old user', userInfo);
-            that.handleLogin(200, userInfo);
-          });
-        } else if(rsp.status == 201) {
-          rsp.json().then(function (userInfo) {
-            log('qqlogin new user', userInfo);
-            that.handleLogin(201, userInfo);
-          });
-        }
-      });
+      // UserComm.qqlogin(userInfo, function (err, rsp) {
+      //   if(err){
+      //     toastShort('获取服务器失败, 请重试');
+      //     return;
+      //   }
+      //
+      //   if(rsp.status == 200) {
+      //     rsp.json().then(function (userInfo) {
+      //       log('qqlogin old user', userInfo);
+      //       that.handleLogin(200, userInfo);
+      //     });
+      //   } else if(rsp.status == 201) {
+      //     rsp.json().then(function (userInfo) {
+      //       log('qqlogin new user', userInfo);
+      //       that.handleLogin(201, userInfo);
+      //     });
+      //   }
+      // });
 
       toastShort('登陆成功');
       that.onBackHandle();

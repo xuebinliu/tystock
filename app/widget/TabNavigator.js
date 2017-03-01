@@ -3,19 +3,16 @@
  *
  * 导航栏
  */
-
 import React, { PropTypes } from 'react';
 
 import {
     StyleSheet,
     View,
-    Image,
     Text,
     TouchableOpacity,
     Dimensions,
     Platform
 } from 'react-native';
-
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -128,7 +125,7 @@ export default class NavigationBar extends React.Component{
   }
 
   render() {
-    let height = Platform.OS === 'ios' ? this.state.height + 20 : this.state.height;
+    let height = Platform.OS === 'ios' ? this.state.height : this.state.height;
     return (
         <View style={[styles.container, {
           height: height,
@@ -230,7 +227,6 @@ if(Platform.OS === 'ios'){
       left: 0,
       flexDirection: 'row',
       width: width,
-      paddingTop: 20
     },
     rightButton: {
       flex: 1,

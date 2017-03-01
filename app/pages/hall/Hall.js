@@ -39,7 +39,7 @@ export default class Hall extends React.Component {
     );
   }
 }
-
+/*
 const IMAGE_SIZE = (Dimensions.get('screen').width - 5*4)/2;
 const styles = StyleSheet.create({
   itemContainer:{
@@ -56,3 +56,4 @@ const styles = StyleSheet.create({
     borderRadius:4,
   },
 });
+*/

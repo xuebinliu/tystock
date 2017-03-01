@@ -4,7 +4,7 @@
  * 全局样式定义
  */
 
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 
 
 export default gstyles = StyleSheet.create({
@@ -13,6 +13,7 @@ export default gstyles = StyleSheet.create({
   container:{
     flex:1,
     backgroundColor:'white',
+    marginTop: Platform.OS == 'ios' ? 20 : 0,
   },
 
   // page content

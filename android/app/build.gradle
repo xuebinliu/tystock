@@ -129,7 +129,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-qq')
+    compile project(':react-native-qqsdk')
     compile project(':react-native-vector-icons')
     compile project(':react-native-image-crop-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])

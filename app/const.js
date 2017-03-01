@@ -3,8 +3,12 @@
  * 常量定义
  */
 
+// 获取QQ登陆信息
+// var url = "https://graph.qq.com/user/get_user_info?access_token=" + accessToken + "&oauth_consumer_key=" + QQ_APP_ID + "&openid=" + userId;
+// http.get(url)
 
 // bomb后台地址
+
 export const BMOB_API_URL = 'https://api.bmob.cn';
 export const BMOB_APP_ID = '1d805f53912ab96361b2c5447aef4301';
 export const BMOB_APP_KEY = '32b3cd7fbb113923039d2c62bedb780c';

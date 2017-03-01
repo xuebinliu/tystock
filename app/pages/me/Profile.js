@@ -12,7 +12,6 @@ import{
   StyleSheet,
   PixelRatio,
   DeviceEventEmitter,
-  NativeModules,
 } from 'react-native';
 
 import {
@@ -29,8 +28,7 @@ import {
 
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import * as QQAPI from 'react-native-qq';
-
+import QQLogin from '../../utils/QQLogin';
 import ModifyText from './ModifyText';
 
 export default class Profile extends React.Component {
@@ -77,7 +75,8 @@ export default class Profile extends React.Component {
 
   // 退出登陆
   onLogout= ()=>{
-    QQAPI.logout();
+
+    QQLogin.logout();
 
     const that = this;
     DeviceStorage.delete(Consts.ACCOUNT_USERINFO_KEY).then(function () {

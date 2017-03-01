@@ -9,7 +9,6 @@ import Feedback from './pages/me/Feedback';
 import About from './pages/me/About';
 import UserInfo from './pages/me/UserInfo';
 import Profile from './pages/me/Profile';
-import AlbumContainer from './pages/album/AlbumContainer';
 
 // utils
 import gstyles from './gstyles';
@@ -36,7 +35,6 @@ export {
   About,
   Feedback,
   Profile,
-  AlbumContainer,
   UserInfo,
 
   gstyles,

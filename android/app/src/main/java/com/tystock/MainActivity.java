@@ -1,7 +1,7 @@
 package com.tystock;
 
 import com.facebook.react.ReactActivity;
-import cn.reactnative.modules.qq.QQPackage;
+import me.vanpan.rctqqsdk.QQSDKPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import android.content.Intent;
