@@ -106,11 +106,19 @@ export default class ModifyText extends React.Component {
     });
   };
 
+  getTitle= ()=>{
+    if(modifyKey == 'nickname') {
+      return '修改昵称';
+    }
+
+    return '标题';
+  };
+
   render(){
     return(
         <View style={gstyles.container}>
           <NavigationBar
-              title={'修改年龄'}
+              title={this.getTitle()}
               leftButtonIcon="md-arrow-back"
               onLeftButtonPress={this.onBackHandle}
               rightButtonTitle={'提交'}

@@ -1,10 +1,9 @@
 package com.tystock;
 
 import android.app.Application;
-import android.util.Log;
 
+import c.b.BP;
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -27,7 +26,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new QQSDKPackage(),
-          new MainReactPackage()
+          new MainReactPackage(),
+          new StockPackage()
       );
     }
   };
@@ -41,5 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    BP.init("1d805f53912ab96361b2c5447aef4301");
   }
 }
