@@ -25,7 +25,6 @@ import {
   CommonUtil,
 } from '../../header';
 
-// import * as QQAPI from 'react-native-qq';
 import UserComm from './UserComm';
 import Register from './Register';
 import QQLogin from '../../utils/QQLogin';
@@ -46,37 +45,43 @@ export default class Login extends React.Component {
   onPressQQLogin= ()=>{
     const that = this;
     QQLogin.login().then(function (data) {
-      log('QQLogin ', data);
+      log('QQLogin data', data);
 
       if(!data) {
         toastShort('获取登陆信息失败, 请重试');
         return;
       }
 
+      let userInfo = {
+        openid:data.userid,
+        access_token:data.access_token,
+        expires_in:data.expires_time
+      };
+
       // 登陆
-      // UserComm.qqlogin(userInfo, function (err, rsp) {
-      //   if(err){
-      //     toastShort('获取服务器失败, 请重试');
-      //     return;
-      //   }
-      //
-      //   if(rsp.status == 200) {
-      //     rsp.json().then(function (userInfo) {
-      //       log('qqlogin old user', userInfo);
-      //       that.handleLogin(200, userInfo);
-      //     });
-      //   } else if(rsp.status == 201) {
-      //     rsp.json().then(function (userInfo) {
-      //       log('qqlogin new user', userInfo);
-      //       that.handleLogin(201, userInfo);
-      //     });
-      //   }
-      // });
+      UserComm.qqlogin(userInfo, function (err, rsp) {
+        if(err){
+          toastShort('获取服务器失败, 请重试');
+          return;
+        }
+
+        if(rsp.status == 200) {
+          rsp.json().then(function (userInfo) {
+            log('qqlogin old user', userInfo);
+            that.handleQQLogin(200, userInfo);
+          });
+        } else if(rsp.status == 201) {
+          rsp.json().then(function (userInfo) {
+            log('qqlogin new user', userInfo);
+            that.handleQQLogin(201, userInfo);
+          });
+        }
+      });
 
       toastShort('登陆成功');
       that.onBackHandle();
     }, function (err) {
-      log('QQAPI login err', err);
+      log('QQLogin login err', err);
       toastShort('QQ登陆失败了');
     });
   };
@@ -86,7 +91,7 @@ export default class Login extends React.Component {
    * @param type 1手机号登陆，200 QQ登陆老用户，201 QQ登陆新用户
    * @param userInfo
    */
-  handleLogin= (type, userInfo)=>{
+  handleQQLogin= (type, userInfo)=>{
     // 保存用户信息到cache
     DeviceStorage.save(Consts.ACCOUNT_USERINFO_KEY, userInfo).then(function () {
       DeviceEventEmitter.emit(Consts.EMMIT_ACCOUNT_CHANGED);
@@ -95,46 +100,34 @@ export default class Login extends React.Component {
     // 如果是qq新用户登陆，则拉取头像和昵称
     if(type == 201) {
       // 获取QQ登陆的用户名和头像url
-      NativeModules.QQAPI.updateUserInfo(function (avatar_url, nickname) {
-        log('QQAPI updateUserInfo', nickname, avatar_url);
-        if(!avatar_url || !nickname) {
-          return;
-        }
-
-        // 更新用户信息到cache
-        DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, {
-          nickname:nickname,
-          avatar_url:avatar_url
-        }).then(function () {
-          log('QQAPI updateUserInfo new user save local cache ok');
-          // 保存到服务器
-          UserComm.updateUserInfo({
-            nickname:nickname,
-            avatar_url:avatar_url,
-          });
-        });
-      });
+      this.getAvatarNickname(userInfo);
     } else if(type == 200) {
-      // QQ第三方登陆的老用户没有头像和昵称，则获取QQ登陆的用户名和头像url
+      // QQ老用户登陆,没有头像和昵称，则获取QQ登陆的用户名和头像url
       if(!userInfo.avatar_url || !userInfo.nickname) {
-        NativeModules.QQAPI.updateUserInfo(function (avatar_url, nickname) {
-          log('Login QQAPI old user updateUserInfo', nickname, avatar_url);
-          DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, {
-            nickname:nickname,
-            avatar_url:avatar_url
-          }).then(function () {
-            log('QQAPI updateUserInfo save local cache ok');
-            // 保存到服务器
-            UserComm.updateUserInfo({
-              nickname:nickname,
-              avatar_url:avatar_url,
-            });
-          }, function (err) {
-            log('Login QQAPI updateUserInfo', err);
-          });
-        });
+        this.getAvatarNickname(userInfo);
       }
     }
+  };
+
+  // 获取qq头像和昵称
+  getAvatarNickname= (userInfo)=>{
+    CommonUtil.getQQAvatarAndNickname(userInfo.authData.qq.openid, userInfo.authData.qq.access_token, function (rsp) {
+      if(!rsp.figureurl_2 || !rsp.nickname) {
+        return;
+      }
+
+      // 更新用户信息到cache
+      DeviceStorage.update(Consts.ACCOUNT_USERINFO_KEY, {
+        nickname:rsp.nickname,
+        avatar_url:rsp.figureurl_2
+      }).then(function () {
+        // 保存到服务器
+        UserComm.updateUserInfo({
+          nickname:rsp.nickname,
+          avatar_url:rsp.figureurl_2,
+        });
+      });
+    });
   };
 
   onPressLogin= ()=>{

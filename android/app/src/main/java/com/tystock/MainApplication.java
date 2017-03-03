@@ -13,7 +13,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.reactnative.modules.qq.QQPackage;
+import me.vanpan.rctqqsdk.QQSDKPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -26,7 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new QQPackage(),
+          new QQSDKPackage(),
           new MainReactPackage()
       );
     }

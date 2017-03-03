@@ -3,7 +3,50 @@
  */
 import DeviceStorage from './Storage';
 
-import {BD_MAP_IP_URL, SK_CURR_CITY, CITIES} from '../const';
+import {BD_MAP_IP_URL, SK_CURR_CITY} from '../const';
+
+/**
+ * 获取QQ用户头像昵称
+ * @param openid
+ * @param access_token
+ * @param callback
+ */
+export function getQQAvatarAndNickname(openid, access_token, callback) {
+  fetch("https://graph.qq.com/user/get_user_info?access_token=" + access_token +
+      "&oauth_consumer_key=1106004972&openid=" + openid, {
+    method:'GET',
+    headers: {
+      'Accept': 'application/json',
+    },
+  }).then(function (data) {
+    data.json().then(function (rsp) {
+      callback(rsp);
+      /*{
+      // 返回结构体
+          ret: 0,
+          msg: '',
+          is_lost: 0,
+          nickname: 'Free',
+          gender: '男',
+          province: '湖北',
+          city: '武汉',
+          year: '1983',
+          figureurl: 'http://qzapp.qlogo.cn/qzapp/1106004972/517847405C7A5AEFE0B6EF439A492EA9/30',
+          figureurl_1: 'http://qzapp.qlogo.cn/qzapp/1106004972/517847405C7A5AEFE0B6EF439A492EA9/50',
+          figureurl_2: 'http://qzapp.qlogo.cn/qzapp/1106004972/517847405C7A5AEFE0B6EF439A492EA9/100',
+          figureurl_qq_1: 'http://q.qlogo.cn/qqapp/1106004972/517847405C7A5AEFE0B6EF439A492EA9/40',
+          figureurl_qq_2: 'http://q.qlogo.cn/qqapp/1106004972/517847405C7A5AEFE0B6EF439A492EA9/100',
+          is_yellow_vip: '0',
+          vip: '0',
+          yellow_vip_level: '0',
+          level: '0',
+          is_yellow_year_vip: '0'
+        }*/
+    });
+  }).catch(function (err) {
+    console.log('getQQAvatarAndNickname', err);
+  });
+}
 
 export function naviGoBack(navigator) {
   if (navigator && navigator.getCurrentRoutes().length > 1) {

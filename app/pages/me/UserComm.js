@@ -102,7 +102,7 @@ export default UserComm = {
   },
 
   /**
-   * 更新用户信息
+   * 更新用户信息，完成后通知UI更新
    * @param params 需要更新的字段
    */
   updateUserInfo(params) {

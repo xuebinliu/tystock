@@ -96,7 +96,7 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
         manifestPlaceholders = [
-                    QQ_APPID: "1106004972"
+                    QQ_APP_ID: "1106004972"
                 ]
     }
     splits {
