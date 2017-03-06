@@ -9,6 +9,7 @@ import Feedback from './pages/me/Feedback';
 import About from './pages/me/About';
 import UserInfo from './pages/me/UserInfo';
 import Profile from './pages/me/Profile';
+import OpenVip from './pages/pay/OpenVip';
 
 // utils
 import gstyles from './gstyles';
@@ -36,6 +37,7 @@ export {
   Feedback,
   Profile,
   UserInfo,
+  OpenVip,
 
   gstyles,
   DeviceStorage,

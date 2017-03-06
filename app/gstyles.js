@@ -12,7 +12,7 @@ export default gstyles = StyleSheet.create({
   // all page container
   container:{
     flex:1,
-    backgroundColor:'white',
+    backgroundColor:'#ececec',
     marginTop: Platform.OS == 'ios' ? 20 : 0,
   },
 
@@ -20,7 +20,14 @@ export default gstyles = StyleSheet.create({
   content:{
     flex:1,
     marginTop:44,
-    backgroundColor:'#ececec',
+    backgroundColor:'#f0f0f0',
+  },
+
+  // page content
+  contentMargin:{
+    flex:1,
+    marginTop:52,
+    backgroundColor:'#f0f0f0',
   },
 
   // list item
@@ -37,7 +44,7 @@ export default gstyles = StyleSheet.create({
   // divider line with margin
   line:{
     height:1,
-    backgroundColor:'#dddddd',
+    backgroundColor:'#e4e4e4',
     marginLeft:8,
     marginRight:8,
   },
@@ -45,7 +52,7 @@ export default gstyles = StyleSheet.create({
   // no margin divider line
   noMarginline:{
     height:1,
-    backgroundColor:'#dddddd',
+    backgroundColor:'#e4e4e4',
   },
 
   // 长按钮
@@ -53,7 +60,7 @@ export default gstyles = StyleSheet.create({
     marginHorizontal:30,
     height:40,
     borderRadius:3,
-    backgroundColor:'forestgreen',
+    backgroundColor:'#fd7736',
     justifyContent:'center',
     alignItems:'center',
   },

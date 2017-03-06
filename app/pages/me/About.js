@@ -17,18 +17,13 @@ import {
 
 export default class About extends React.Component {
 
-  onBackHandle= ()=> {
-    const {navigator} = this.props;
-    return CommonUtil.naviGoBack(navigator);
-  };
-
   render() {
     return (
         <View style={gstyles.container}>
           <NavigationBar
               title={'关于'}
               leftButtonIcon="md-arrow-back"
-              onLeftButtonPress={this.onBackHandle} />
+              onLeftButtonPress={()=>CommonUtil.naviGoBack(this.props.navigator)} />
 
           <View style={gstyles.content}>
 
@@ -37,7 +32,7 @@ export default class About extends React.Component {
 
             <Text style={{alignSelf:'center'}}>版本1.0</Text>
 
-            <Text style={{marginTop:40}}>    红楼是腾云出品的一款高端私密同城社交APP</Text>
+            <Text style={{marginTop:40}}>量子VIP</Text>
           </View>
         </View>
     );

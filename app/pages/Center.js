@@ -21,6 +21,7 @@ import {
   About,
   DeviceStorage,
   Profile,
+  OpenVip,
   CommonUtil,
   Consts,
   log,
@@ -70,18 +71,36 @@ export default class Center extends React.Component {
 
   // 点击登录
   onLogin= ()=>{
+    this.checkLogin('Profile');
+  };
+
+  onPressVip= ()=>{
+    this.checkLogin('OpenVip');
+  };
+
+  /**
+   * 检查登陆及跳转对应页面
+   * @param pageId
+   */
+  checkLogin= (pageId)=>{
     const {navigator} = this.props;
     DeviceStorage.get(Consts.ACCOUNT_USERINFO_KEY).then(function (userInfo) {
       log('Center init userinfo', userInfo);
-      if(userInfo) {
-        // 已登陆，去个人信息页面
-        navigator.push({
-          component: Profile,
-        });
-      } else {
+      if(!userInfo) {
         // 未登录,去登陆页面
         navigator.push({
           component: Login,
+        });
+      } else {
+        let page;
+        if(pageId == 'OpenVip') {
+          page = OpenVip;
+        } else if(pageId == 'Profile') {
+          page = Profile;
+        }
+
+        navigator.push({
+          component: page,
         });
       }
     });
@@ -140,9 +159,9 @@ export default class Center extends React.Component {
             <View style={gstyles.line}/>
 
             <View style={gstyles.noMarginline}/>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.onPressVip}>
               <View style={[gstyles.listItem, styles.item,]}>
-                <Text>充值</Text>
+                <Text>VIP</Text>
                 <View style={{flexDirection:'row', flex:1, justifyContent:'flex-end'}}>
                   <Ionicons name="ios-arrow-forward" size={20} color="gray" style={{alignSelf:'center', marginRight:15}}/>
                 </View>

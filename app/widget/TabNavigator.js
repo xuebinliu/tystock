@@ -38,7 +38,7 @@ export default class NavigationBar extends React.Component{
   static defaultProps = {
     height: 44,
     titleColor: 'white',
-    backgroundColor: 'dimgray',
+    backgroundColor: '#fd7736',
     leftButtonTitle: null,
     leftButtonTitleColor: '#000',
     rightButtonTitle: null,

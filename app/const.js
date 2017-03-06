@@ -22,7 +22,12 @@ export const ACCOUNT_USERINFO_KEY  = 'ACCOUNT_USERINFO_KEY';
 // 账号信息发生变化
 export const EMMIT_ACCOUNT_CHANGED = 'EMMIT_ACCOUNT_CHANGED';
 
-
+/*------------------ 颜色 ------------------*/
+export const COLOR_MAIN = '#fd7736';        // 橘红色，主色调
+export const COLOR_TEXT_LINK = '#106fbc';   // 文字主色 链接
+export const COLOR_TEXT = '#252525';        // 文字主色
+export const COLOR_TEXT_80 = '#252525cc';   // 文字主色 80% a
+export const COLOR_TEXT_60 = '#25252599';   // 文字主色 60% a
 
 // 图标名称
 export const IC_NAV_BACK  = 'md-arrow-back';      // 后退
