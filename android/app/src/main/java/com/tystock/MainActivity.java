@@ -1,9 +1,6 @@
 package com.tystock;
 
 import com.facebook.react.ReactActivity;
-import me.vanpan.rctqqsdk.QQSDKPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import android.content.Intent;
 
 public class MainActivity extends ReactActivity {

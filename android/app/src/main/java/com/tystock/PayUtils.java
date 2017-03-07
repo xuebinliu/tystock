@@ -17,8 +17,6 @@ public class PayUtils extends ReactContextBaseJavaModule {
 
     private int WX_PLUGIN_VERSION = 7;
 
-    private String newOrderId;
-
     public PayUtils(ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -32,20 +30,26 @@ public class PayUtils extends ReactContextBaseJavaModule {
      * 发起支付
      * @param isAliPay 支付类型，true支付宝，false微信
      * @param params
+     *      // 商品名
+            String name = params.getString("name");
+            // 描述内容
+            String content = params.getString("content");
+            // 价格
+            double price = params.getDouble("price");
      * @param callback
      */
     @ReactMethod
     private void pay(Boolean isAliPay, final ReadableMap params, final Callback callback) {
         Log.d(TAG, "pay" + ", isAliPay" + isAliPay);
 
-        newOrderId = "";
-
         // 检查支付宝是否安装
-        if (isAliPay && !CommonUtil.checkPackageInstalled(getReactApplicationContext(),
-                "com.eg.android.AlipayGphone", "https://www.alipay.com")) {
-            // 支付宝支付要求用户已经安装支付宝客户端
-            Toast.makeText(getReactApplicationContext(), "请安装支付宝APP", Toast.LENGTH_SHORT).show();
-            return;
+        if (isAliPay) {
+            if (!CommonUtil.checkPackageInstalled(getReactApplicationContext(),
+                    "com.eg.android.AlipayGphone", "https://www.alipay.com")) {
+                // 支付宝支付要求用户已经安装支付宝客户端
+                Toast.makeText(getReactApplicationContext(), "请安装支付宝APP", Toast.LENGTH_SHORT).show();
+                return;
+            }
         } else {
             // 需要用微信支付时，要安装微信客户端，然后需要插件
             if (CommonUtil.checkPackageInstalled(getReactApplicationContext(),
@@ -109,7 +113,7 @@ public class PayUtils extends ReactContextBaseJavaModule {
             @Override
             public void orderId(String orderId) {
                 // 此处应该保存订单号,比如保存进数据库等,以便以后查询
-                newOrderId = orderId;
+                callback.invoke(orderId);
                 Log.d(TAG, "PListener orderId=" + orderId);
             }
 

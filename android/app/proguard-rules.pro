@@ -66,7 +66,7 @@
 -dontwarn okio.**
 
 # bmob pay
--libraryjars libs/BmobPay_v3.x.x_xxxxxx.jar
+-libraryjars libs/BmobPay_v3.1.1_170111.jar
 -keepclasseswithmembers class c.b.** { *; }
 -keep interface c.b.PListener{ *; }
 -keep interface c.b.QListener{ *; }

@@ -10,6 +10,7 @@ import{
   Text,
   StyleSheet,
   TouchableOpacity,
+  NativeModules,
 } from 'react-native';
 
 import {
@@ -17,6 +18,7 @@ import {
   NavigationBar,
   CommonUtil,
   Consts,
+  PayResult,
 } from '../../header';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -27,7 +29,7 @@ export default class Order extends React.Component {
     super(props);
 
     this.state = {
-      checked:0,    // checkbox选择态，0都未选中，1支付宝，2微信
+      checked:1,    // checkbox选择态，1支付宝，2微信
     };
   }
 
@@ -40,39 +42,23 @@ export default class Order extends React.Component {
 
   // 点击支付
   onPressPay= ()=>{
+    let isAliPay = this.state.checked == 1 ? true : false;
+    let name = '开通';
+    let content = CommonUtil.getProductInfo(this.props.route.number);
+    let price = CommonUtil.getPrice(this.props.route.number);
 
-  };
-
-  getProductInfo= ()=>{
-    let info;
-    if(this.props.route.number == 1) {
-      info = '量子VIP(1个月)';
-    } else if(this.props.route.number == 3) {
-      info = '量子VIP(3个月)';
-    } else if(this.props.route.number == 6) {
-      info = '量子VIP(6个月)';
-    } else if(this.props.route.number == 12) {
-      info = '量子VIP(12个月)';
-    } else {
-      info = '量子VIP(1个月)';
-    }
-    return info;
-  };
-
-  getPrice= ()=>{
-    let price;
-    if(this.props.route.number == 1) {
-      price = 300;
-    } else if(this.props.route.number == 3) {
-      price = 810;
-    } else if(this.props.route.number == 6) {
-      price = 1530;
-    } else if(this.props.route.number == 12) {
-      price = 2880;
-    } else {
-      price = 300;
-    }
-    return '￥' + price + '元';
+    const {navigator} = this.props;
+    navigator.push({
+      component:PayResult,
+      payData:{
+        isAliPay:isAliPay,
+        params:{
+          name:name,
+          content:content,
+          price:price
+        }
+      }
+    });
   };
 
   render() {
@@ -87,13 +73,17 @@ export default class Order extends React.Component {
 
             <View style={styles.productItem}>
               <Text style={styles.productItemText}>商品信息</Text>
-              <Text style={styles.productItemText}>{this.getProductInfo()}</Text>
+              <Text style={styles.productItemText}>
+                {CommonUtil.getProductInfo(this.props.route.number)}
+              </Text>
             </View>
             <View style={gstyles.noMarginline}/>
 
             <View style={styles.productItem}>
               <Text style={styles.productItemText}>支付金额</Text>
-              <Text style={[styles.productItemText, {color:Consts.COLOR_MAIN}]}>{this.getPrice()}</Text>
+              <Text style={[styles.productItemText, {color:Consts.COLOR_MAIN}]}>
+                ￥{CommonUtil.getPrice(this.props.route.number)}元
+              </Text>
             </View>
 
             <Text style={{fontSize:14, margin:10}}>选择支付方式</Text>
@@ -117,7 +107,7 @@ export default class Order extends React.Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={this.onPressLogin} style={[gstyles.button, {marginTop:30}]}>
+            <TouchableOpacity onPress={this.onPressPay} style={[gstyles.button, {marginTop:30}]}>
               <Text style={{color:'white'}}>支付</Text>
             </TouchableOpacity>
 

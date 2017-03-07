@@ -95,6 +95,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+
         manifestPlaceholders = [
                     QQ_APP_ID: "1106004972"
                 ]
@@ -107,6 +108,11 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds

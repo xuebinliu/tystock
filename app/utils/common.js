@@ -130,3 +130,35 @@ export function uploadFile2Server(file, callback) {
     callback();
   });
 }
+
+export function getProductInfo(number) {
+  let info;
+  if(number == 1) {
+    info = '量子VIP(1个月)';
+  } else if(number == 3) {
+    info = '量子VIP(3个月)';
+  } else if(number == 6) {
+    info = '量子VIP(6个月)';
+  } else if(number == 12) {
+    info = '量子VIP(12个月)';
+  } else {
+    info = '量子VIP(1个月)';
+  }
+  return info;
+}
+
+export function getPrice(number) {
+  let price;
+  if(number == 1) {
+    price = 300;
+  } else if(number == 3) {
+    price = 810;
+  } else if(number == 6) {
+    price = 1530;
+  } else if(number == 12) {
+    price = 2880;
+  } else {
+    price = 300;
+  }
+  return price;
+}

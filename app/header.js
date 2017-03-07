@@ -10,6 +10,7 @@ import About from './pages/me/About';
 import UserInfo from './pages/me/UserInfo';
 import Profile from './pages/me/Profile';
 import OpenVip from './pages/pay/OpenVip';
+import PayResult from './pages/pay/PayResult';
 
 // utils
 import gstyles from './gstyles';
@@ -38,6 +39,7 @@ export {
   Profile,
   UserInfo,
   OpenVip,
+  PayResult,
 
   gstyles,
   DeviceStorage,
