@@ -43,7 +43,7 @@ export default class Order extends React.Component {
   // 点击支付
   onPressPay= ()=>{
     let isAliPay = this.state.checked == 1 ? true : false;
-    let name = '开通';
+    let name = this.props.route.number;
     let content = CommonUtil.getProductInfo(this.props.route.number);
     let price = CommonUtil.getPrice(this.props.route.number);
 

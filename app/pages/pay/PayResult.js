@@ -51,28 +51,77 @@ export default class PayResult extends React.Component {
         payResult:result,
         orderId:orderId
       });
+
+      that.query();
     });
   };
 
-  onPressQuery= ()=>{
+  query= ()=>{
+    const that = this;
     PayComm.queryOrder(this.state.orderId, function (err, rsp) {
+      that.setState({
+        isLoading:false,
+      });
+
       if(err) {
         toastShort('查询失败，请稍后重试');
         return;
       }
 
       rsp.json().then(function (data) {
+        log('query order=', that.state.orderId, ', rsp data=', data);
         if(data.trade_state == 'NOTPAY') {
           // 未支付成功
-          toastShort('支付未成功');
+          that.setState({
+            payResult:'failed',
+          });
+
+          // 保存订单信息到服务器
+          PayComm.saveOrderToServer(data, function (err) {
+            if(err) {
+              log('saveOrderToServer failed', data, err);
+              toastShort('保存订单到服务器失败，如未开通请联系客服');
+              return;
+            } else {
+              toastShort('恭喜您已开通量子VIP服务');
+            }
+          });
+
+        } else if(data.trade_state == 'SUCCESS') {
+          that.setState({
+            payResult:'success',
+          });
+
+          // 保存订单信息到服务器
+          PayComm.saveOrderToServer(data, function (err) {
+            if(err) {
+              log('saveOrderToServer failed', data, err);
+              toastShort('保存订单到服务器失败，如未开通请联系客服');
+              return;
+            } else {
+              toastShort('恭喜您已开通量子VIP服务');
+            }
+          });
         }
       });
-    })
+    });
+  };
+
+  onPressQuery= ()=>{
+    this.setState({
+      isLoading:true,
+    });
+
+    this.query();
   };
 
   renderContent= ()=> {
     if(this.state.isLoading) {
-      return (<LoadingView text="正在获取订单，请稍后..."/>);
+      if(!this.state.orderId) {
+        return (<LoadingView text="正在获取订单，请稍后..."/>);
+      } else {
+        return (<LoadingView text="正在查询，请稍后..."/>);
+      }
     } else {
       // 展示支付结果
       if(this.state.payResult == 'success') {

@@ -10,6 +10,7 @@ import About from './pages/me/About';
 import UserInfo from './pages/me/UserInfo';
 import Profile from './pages/me/Profile';
 import OpenVip from './pages/pay/OpenVip';
+import UserComm from './pages/me/UserComm';
 import PayResult from './pages/pay/PayResult';
 
 // utils
@@ -40,6 +41,8 @@ export {
   UserInfo,
   OpenVip,
   PayResult,
+
+  UserComm,
 
   gstyles,
   DeviceStorage,
