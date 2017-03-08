@@ -39,7 +39,7 @@ public class PayUtils extends ReactContextBaseJavaModule {
      * @param callback
      */
     @ReactMethod
-    private void pay(Boolean isAliPay, final ReadableMap params, final Callback callback) {
+    public void pay(Boolean isAliPay, final ReadableMap params, final Callback callback) {
         Log.d(TAG, "pay" + ", isAliPay" + isAliPay);
 
         // 检查支付宝是否安装
@@ -93,27 +93,34 @@ public class PayUtils extends ReactContextBaseJavaModule {
 
         Log.d(TAG, "pay" + ", name" + name + ", content=" + content + ", price=" + price);
 
-        BP.pay(name, content, price, isAliPay, new PListener() {
+        BP.pay(content, content, price, isAliPay, new PListener() {
+
+            private String orderId;
 
             // 因为网络等原因,支付结果未知(小概率事件),出于保险起见稍后手动查询
             @Override
             public void unknow() {
                 Log.d(TAG, "PListener unknown");
                 Toast.makeText(getCurrentActivity(), "支付结果未知,请稍后手动查询", Toast.LENGTH_SHORT).show();
+
+                callback.invoke("unknown", orderId);
             }
 
             // 支付成功,如果金额较大请手动查询确认
             @Override
             public void succeed() {
                 Log.d(TAG, "PListener succeed");
-                Toast.makeText(getCurrentActivity(), "支付成功!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getCurrentActivity(), "支付成功", Toast.LENGTH_SHORT).show();
+
+                callback.invoke("success", orderId);
             }
 
             // 无论成功与否,返回订单号
             @Override
             public void orderId(String orderId) {
                 // 此处应该保存订单号,比如保存进数据库等,以便以后查询
-                callback.invoke(orderId);
+                this.orderId = orderId;
+
                 Log.d(TAG, "PListener orderId=" + orderId);
             }
 
@@ -132,7 +139,10 @@ public class PayUtils extends ReactContextBaseJavaModule {
                 } else {
                     Toast.makeText(getCurrentActivity(), "支付中断", Toast.LENGTH_SHORT).show();
                 }
+
+                callback.invoke("failed", orderId);
             }
         });
     }
+
 }

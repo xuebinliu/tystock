@@ -9,7 +9,7 @@
 
 // bomb后台地址
 
-export const BMOB_API_URL = 'https://api.bmob.cn';
+export const BMOB_API_URL = 'https://api.bmob.cn/1/';
 export const BMOB_APP_ID = '1d805f53912ab96361b2c5447aef4301';
 export const BMOB_APP_KEY = '32b3cd7fbb113923039d2c62bedb780c';
 

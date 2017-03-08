@@ -13,7 +13,7 @@ export default class LoadingView extends React.Component{
         <ActivityIndicator
             size="large"
             color="#3e9ce9"/>
-        <Text style={styles.loadingText}>数据加载中...</Text>
+        <Text style={styles.loadingText}>{this.props.text ? this.props.text : '数据加载中...'}</Text>
       </View>
     );
   }

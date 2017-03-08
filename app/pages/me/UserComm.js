@@ -23,7 +23,7 @@ export default UserComm = {
   accountLogin(account, pwd, callback) {
     let url = '?username=' + account + '&password=' +pwd;
     log('UserComm accountLogin url=', url);
-    fetch(Consts.BMOB_API_URL + '/1/login' + url, {
+    fetch(Consts.BMOB_API_URL + 'login' + url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -48,7 +48,7 @@ export default UserComm = {
    * @param callback
    */
   register(account, pwd, callback) {
-    fetch(Consts.BMOB_API_URL + '/1/users', {
+    fetch(Consts.BMOB_API_URL + 'users', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -75,7 +75,7 @@ export default UserComm = {
    * @param callback(err, response)
    */
   qqlogin(userInfo, callback){
-    fetch(Consts.BMOB_API_URL + '/1/users', {
+    fetch(Consts.BMOB_API_URL + 'users', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -110,7 +110,7 @@ export default UserComm = {
 
     DeviceStorage.get(Consts.ACCOUNT_USERINFO_KEY).then(function (userInfo) {
       // 保存到服务器
-      fetch(Consts.BMOB_API_URL + '/1/users/' + userInfo.objectId, {
+      fetch(Consts.BMOB_API_URL + 'users/' + userInfo.objectId, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -137,7 +137,7 @@ export default UserComm = {
    */
   requestSms(phoneNumber, callback) {
     log('UserComm requestSms', phoneNumber);
-    fetch(Consts.BMOB_API_URL + '/1/requestSms', {
+    fetch(Consts.BMOB_API_URL + 'requestSms', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -166,7 +166,7 @@ export default UserComm = {
    */
   phoneLogin(phoneNumber, smsCode, callback) {
     log('UserComm phoneLogin', phoneNumber, smsCode);
-    fetch(Consts.BMOB_API_URL + '/1/users', {
+    fetch(Consts.BMOB_API_URL + 'users', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
