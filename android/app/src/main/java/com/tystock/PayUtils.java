@@ -91,7 +91,7 @@ public class PayUtils extends ReactContextBaseJavaModule {
         // 价格
         double price = params.getDouble("price");
 
-        Log.d(TAG, "pay" + ", name" + name + ", content=" + content + ", price=" + price);
+        Log.d(TAG, "pay name=" + name + ", content=" + content + ", price=" + price);
 
         BP.pay(content, content, price, isAliPay, new PListener() {
 

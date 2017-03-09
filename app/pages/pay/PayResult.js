@@ -68,34 +68,34 @@ export default class PayResult extends React.Component {
         return;
       }
 
-      rsp.json().then(function (data) {
-        log('query order=', that.state.orderId, ', rsp data=', data);
-        if(data.trade_state == 'NOTPAY') {
+      rsp.json().then(function (order) {
+        log('query order=', that.state.orderId, ', rsp order=', order);
+        if(order.trade_state == 'NOTPAY') {
           // 未支付成功
           that.setState({
             payResult:'failed',
           });
 
           // 保存订单信息到服务器
-          PayComm.saveOrderToServer(data, function (err) {
+          PayComm.saveOrderToServer(order, function (err) {
             if(err) {
-              log('saveOrderToServer failed', data, err);
+              log('saveOrderToServer failed', order, err);
               toastShort('保存订单到服务器失败，如未开通请联系客服');
               return;
             } else {
-              toastShort('恭喜您已开通量子VIP服务');
+              toastShort('恭喜您已开通VIP');
             }
           });
 
-        } else if(data.trade_state == 'SUCCESS') {
+        } else if(order.trade_state == 'SUCCESS') {
           that.setState({
             payResult:'success',
           });
 
           // 保存订单信息到服务器
-          PayComm.saveOrderToServer(data, function (err) {
+          PayComm.saveOrderToServer(order, function (err) {
             if(err) {
-              log('saveOrderToServer failed', data, err);
+              log('saveOrderToServer failed', order, err);
               toastShort('保存订单到服务器失败，如未开通请联系客服');
               return;
             } else {

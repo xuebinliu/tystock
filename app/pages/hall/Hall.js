@@ -13,6 +13,7 @@ import {
 import {
   gstyles,
   NavigationBar,
+  log,
 } from '../../header';
 
 import * as Const from '../../const.js';
@@ -20,7 +21,7 @@ import * as Const from '../../const.js';
 export default class Hall extends React.Component {
   constructor(props) {
     super(props);
-    console.log('Hall constructor');
+    log('Hall constructor');
 
     this.state = {
       isFirstLoading: false,
