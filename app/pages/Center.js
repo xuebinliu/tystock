@@ -25,6 +25,7 @@ import {
   CommonUtil,
   Consts,
   log,
+  crawler,
 } from '../header';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -38,6 +39,8 @@ export default class Center extends React.Component {
     };
 
     log('Center constructor');
+
+    crawler.crawlerIWenCaiStrategySubmit(null, null);
   }
 
   componentDidMount() {

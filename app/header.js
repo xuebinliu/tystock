@@ -19,6 +19,7 @@ import DeviceStorage from './utils/Storage';
 import {toastShort, toastLong} from './utils/ToastUtil';
 import {naviGoBack} from './utils/common';
 import log from './utils/logger';
+import crawler from './crawler/crawler';
 
 import * as CommonUtil from './utils/common';
 import * as Consts from './const';
@@ -49,6 +50,7 @@ export {
   toastShort,
   toastLong,
   log,
+  crawler,
 
   LoadingView,
   NavigationBar,

@@ -17,10 +17,6 @@ export default class Main extends React.Component {
     this.state = {
       selectedTab:'home'
     };
-
-    global.vip_state = "dddd";
-
-    console.log(global.vip_state);
   }
 
   render() {
