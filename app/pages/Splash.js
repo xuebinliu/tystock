@@ -9,7 +9,7 @@ import {
     View,
 } from 'react-native';
 
-import MainContainer from './MainContainer';
+import Main from './Main';
 
 export default class Splash extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class Splash extends React.Component {
     const {navigator} = this.props;
     this.timer = setTimeout(()=> {
       navigator.resetTo({
-        component: MainContainer,
+        component: Main,
       });
     }, 1000);
   }

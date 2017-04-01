@@ -43,7 +43,6 @@ export default GoldComm = {
    * @param callback
    */
   queryStrategyHis(req, callback) {
-    // let where = 'where={"startDate": ' + data.startDate + "," +  '}';
     let where = {
       startDate:req.startDate,
       endDate:req.endDate,
@@ -72,11 +71,11 @@ export default GoldComm = {
   },
 
   /**
-   * 上报回测数据结果
+   * 上报回测数据Submit结果
    * @param req
    * @param result
    */
-  uploadStrategyHis(req, result) {
+  uploadStrategyHisSubmit(req, result) {
     let url = Consts.BMOB_API_URL + 'classes/' + req.his_table_name;
 
     log('GoldComm queryStrategyHis encode url', encodeURI(url));
@@ -93,12 +92,12 @@ export default GoldComm = {
         startDate:req.startDate,
         endDate:req.endDate,
         stockHoldCount:req.stockHoldCount,
-        result: result,
+        submitResult: result,
       })
     }).then((response) => {
-      log('GoldComm uploadStrategyHis', response);
+      log('GoldComm uploadStrategyHisSubmit', response);
     }).catch((error) => {
-      log('GoldComm uploadStrategyHis err', error);
+      log('GoldComm uploadStrategyHisSubmit err', error);
     });
   },
 }

@@ -59,7 +59,7 @@ export default class GoldCard extends React.Component {
       response.json().then(function (data) {
         if(data.results.length > 0) {
           // 其他人已经抓取过了，直接用
-          that.updateState(data.results[0].result);
+          that.updateState(data.results[0].submitResult);
         } else {
           // 服务器还没有数据，去抓取
           crawler.crawlerIWenCaiStrategySubmit(that.props.data, function (rsp) {
@@ -67,7 +67,7 @@ export default class GoldCard extends React.Component {
               // 抓取成功，刷新界面
               that.updateState(rsp.data.result);
               // 上传服务器
-              GoldComm.uploadStrategyHis(that.props.data, rsp.data.result);
+              GoldComm.uploadStrategyHisSubmit(that.props.data, rsp.data.result);
             } else {
               log('crawlerIWenCaiStrategySubmit failed', rsp);
             }
@@ -113,26 +113,33 @@ export default class GoldCard extends React.Component {
         <View style={styles.content_container}>
 
           <View style={styles.content_item_container}>
-            <Text>最大胜率(持股{this.state.maxWinRateDay}天)</Text>
+            <Text>最佳持股</Text>
+            <Text style={{fontSize:18, color:'red'}}>{'9天'}</Text>
+          </View>
+
+          <View style={{backgroundColor:'#e4e4e4', width:1, marginVertical:5}}/>
+
+          <View style={styles.content_item_container}>
+            <Text>最大胜率</Text>
             <Text style={{fontSize:18, color:'red'}}>{(this.state.maxWinRate*100).toFixed(2) + '%'}</Text>
           </View>
 
           <View style={{backgroundColor:'#e4e4e4', width:1, marginVertical:5}}/>
 
           <View style={styles.content_item_container}>
-            <Text>最大年化收益率(持股{this.state.maxAnnualYieldDay}天)</Text>
+            <Text>最大年化收益率</Text>
             <Text style={{fontSize:18, color:'red'}}>{(this.state.maxAnnualYield*100).toFixed(2) + '%'}</Text>
           </View>
 
         </View>
 
         <View style={styles.stock_container}>
-          <Text>今日精选</Text>
-          <Text>中远海特</Text>
+          <Text style={{fontSize:14}}>今日精选股</Text>
+          <Text style={{fontSize:14}}>中远海特</Text>
         </View>
 
         <View style={styles.stock_container}>
-          <Text>持仓</Text>
+          <Text>今日持仓股</Text>
           <Text>中远海特</Text>
         </View>
 
@@ -171,9 +178,9 @@ const styles = StyleSheet.create({
   stock_container:{
     flexDirection:'row',
     backgroundColor:'#f9f9f9',
-    height:40,
+    height:35,
     marginTop:5,
-    justifyContent:'center',
+    justifyContent:'space-around',
     alignItems:'center',
   },
 
