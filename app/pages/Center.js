@@ -39,8 +39,6 @@ export default class Center extends React.Component {
     };
 
     log('Center constructor');
-
-    crawler.crawlerIWenCaiStrategySubmit(null, null);
   }
 
   componentDidMount() {

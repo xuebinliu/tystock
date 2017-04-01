@@ -35,6 +35,7 @@ import EmptyView from './widget/EmptyView';
 import BaseListViewComponent from './base/BaseListViewComponent';
 
 export {
+  // page
   Login,
   About,
   Feedback,
@@ -43,24 +44,25 @@ export {
   OpenVip,
   PayResult,
 
+  // comm
   UserComm,
 
+  // util
   gstyles,
   DeviceStorage,
   toastShort,
   toastLong,
   log,
   crawler,
+  naviGoBack,
+  CommonUtil,
+  Consts,
 
+  // widget
   LoadingView,
   NavigationBar,
   BusyIndicator,
   loaderHandler,
   EmptyView,
-
-  naviGoBack,
-  CommonUtil,
-  Consts,
-
   BaseListViewComponent,
 }
