@@ -75,7 +75,7 @@ export default GoldComm = {
    * @param req
    * @param result
    */
-  uploadStrategyHisSubmit(req, result) {
+  uploadStrategyHisSubmit(req, result, stockData, callback) {
     let url = Consts.BMOB_API_URL + 'classes/' + req.his_table_name;
 
     log('GoldComm queryStrategyHis encode url', encodeURI(url));
@@ -93,11 +93,45 @@ export default GoldComm = {
         endDate:req.endDate,
         stockHoldCount:req.stockHoldCount,
         submitResult: result,
+        stockData: stockData,
       })
     }).then((response) => {
       log('GoldComm uploadStrategyHisSubmit', response);
+
+      callback(null, response);
     }).catch((error) => {
       log('GoldComm uploadStrategyHisSubmit err', error);
+    });
+  },
+
+  /**
+   * 上报回测数据Transaction结果
+   * @param req
+   * @param result
+   */
+  uploadStrategyHisTransaction(req, objectId, result) {
+    let url = Consts.BMOB_API_URL + 'classes/' + req.his_table_name + '/' + objectId;
+
+    log('GoldComm queryStrategyHis encode url', encodeURI(url));
+
+    fetch(encodeURI(url), {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-Bmob-Application-Id':Consts.BMOB_APP_ID,
+        'X-Bmob-REST-API-Key':Consts.BMOB_APP_KEY,
+      },
+      body: JSON.stringify({
+        startDate:req.startDate,
+        endDate:req.endDate,
+        stockHoldCount:req.stockHoldCount,
+        transactionResult: result,
+      })
+    }).then((response) => {
+      log('GoldComm uploadStrategyHisTransaction', response);
+    }).catch((error) => {
+      log('GoldComm uploadStrategyHisTransaction err', error);
     });
   },
 }

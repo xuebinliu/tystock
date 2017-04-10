@@ -11,7 +11,7 @@ import {
 export default crawler = {
 
   /**
-   * 抓取iwencai策略回测 持股天数胜率及选股结果
+   * 抓取iwencai策略回测 Submit接口 持股天数胜率及选股结果
    * @param formData
    * @param callback
    */
@@ -66,18 +66,21 @@ export default crawler = {
   },
 
   /**
-   * 抓取iwencai策略回测 模拟交易结果
+   * 抓取iwencai策略回测 Transaction接口 模拟交易结果
    * @param formData
    * @param callback
    */
-  crawlerIWenCaiStrategyTransaction(formData, callback) {
+  crawlerIWenCaiStrategyTransaction(formData, hold_for, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://www.iwencai.com/traceback/strategy/transaction', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('Accept', 'application/json, text/javascript, */*; q=0.01');
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-    let reqData = '';
+    let reqData = 'hold_for=19&';
+    reqData += 'sort=desc&';
+    reqData += 'newType=0&';
+    reqData += 'title=bought_at&';
     for(let key in formData) {
       switch (key) {
         case 'query':
@@ -85,11 +88,11 @@ export default crawler = {
           break;
         case 'startDate':
           reqData += key + '=' + formData[key] + '&';
-          reqData += 'sTime' + '=' + formData[key] + '&';
+          reqData += 'stime' + '=' + formData[key] + '&';
           break;
         case 'endDate':
           reqData += key + '=' + formData[key] + '&';
-          reqData += 'eTime' + '=' + formData[key] + '&';
+          reqData += 'etime' + '=' + formData[key] + '&';
           break;
         case 'fell':
           reqData += key + '=' + formData[key] + '&';
@@ -111,7 +114,8 @@ export default crawler = {
           break;
       }
     }
-    log('crawlerIWenCaiStrategySubmit start reqData', reqData);
+
+    log('crawlerIWenCaiStrategyTransaction start reqData', reqData);
 
     xhr.send(reqData);
 

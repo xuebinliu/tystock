@@ -6,8 +6,6 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
-  Text,
 } from 'react-native';
 
 import {
@@ -25,7 +23,7 @@ export default class Home extends BaseListViewComponent {
 
     this.state = {
       nav_title:'量子金策',
-      isFirstLoading:true,    // 是否首次加载中
+      isFirstLoading:true,    // 是否首次加载
     };
   }
 
@@ -53,7 +51,7 @@ export default class Home extends BaseListViewComponent {
     return (<GoldCard navigator={this.props.navigator} data={rowData}/>);
   };
 
-  // 去掉分割线
+  // 重载去掉分割线
   renderSeparator= (sectionID, rowID)=>{
     return (<View key={`${sectionID}-${rowID}`}></View>);
   };

@@ -19,7 +19,7 @@ import {
 
 import GoldComm from './GoldComm';
 
-export default class GoldHis extends React.Component {
+export default class GoldHisPage extends React.Component {
 
   render() {
     return (

@@ -66,8 +66,6 @@ export default class BaseListViewComponent extends React.Component {
   }
 
   updateData= (data)=>{
-    // log('BaseListViewComponent updateData', data);
-
     if(data && data.length > 0){
       dataCache = data;
     }
