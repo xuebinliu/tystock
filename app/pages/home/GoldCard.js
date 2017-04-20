@@ -179,23 +179,23 @@ export default class GoldCard extends React.Component {
 
         <View style={gstyles.line}/>
 
-        <View style={styles.content_container}>
+        <View style={styles.result_container}>
 
-          <View style={styles.content_item_container}>
+          <View style={styles.result_item_container}>
             <Text>最佳持股</Text>
             <Text style={{fontSize:18, color:'red'}}>{this.state.maxWinRateDay + '天'}</Text>
           </View>
 
           <View style={{backgroundColor:'#e4e4e4', width:1, marginVertical:5}}/>
 
-          <View style={styles.content_item_container}>
+          <View style={styles.result_item_container}>
             <Text>最大胜率</Text>
             <Text style={{fontSize:18, color:'red'}}>{(this.state.maxWinRate*100).toFixed(2) + '%'}</Text>
           </View>
 
           <View style={{backgroundColor:'#e4e4e4', width:1, marginVertical:5}}/>
 
-          <View style={styles.content_item_container}>
+          <View style={styles.result_item_container}>
             <Text>最大年化收益率</Text>
             <Text style={{fontSize:18, color:'red'}}>{(this.state.maxAnnualYield*100).toFixed(2) + '%'}</Text>
           </View>
@@ -232,11 +232,11 @@ const styles = StyleSheet.create({
     marginVertical:10,
   },
 
-  content_container:{
+  result_container:{
     flexDirection:'row',
   },
 
-  content_item_container:{
+  result_item_container:{
     flex:1,
     alignItems:'center',
     justifyContent:'center',
