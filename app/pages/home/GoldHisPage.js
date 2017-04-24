@@ -6,11 +6,13 @@
 import React from 'react';
 import {
   View,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   Keyboard,
+  ListView,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,7 +27,12 @@ import {
 
 import GoldComm from './GoldComm';
 
+// 请求参数
 let req;
+// 选股结果
+var stock_ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+// 历史交易结果
+var transaction_ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 export default class GoldHisPage extends React.Component {
 
@@ -41,13 +48,17 @@ export default class GoldHisPage extends React.Component {
       submitResult:this.props.route.submitResult,           // 收益回测结果
       stockData:this.props.route.stockData,                 // 当前选股结果
       transactionResult:this.props.route.transactionResult, // 模拟交易结果
+
+      stock_dataSource:stock_ds.cloneWithRows(this.props.route.stockData.list.data),
+      transaction_dataSource:transaction_ds.cloneWithRows(this.props.route.transactionResult.data),
     };
+
+    log('GoldHisPage constructor req=', req);
   }
 
   // 执行回测
   onPressTest= ()=>{
     Keyboard.dismiss();
-
   };
 
   /**
@@ -153,17 +164,120 @@ export default class GoldHisPage extends React.Component {
   };
 
   /**
+   * 渲染选股结果
+   * @param rowData
+   * @return {XML}
+   */
+  renderStockResultRow= (rowData)=>{
+    log('renderStockResultRow', rowData);
+    return (
+        <View style={{flexDirection:'row', alignItems:'center', height:30}}>
+          <Text style={{flex:1}}>{rowData.codeName}</Text>
+          <Text style={{flex:1}}>{rowData.code}</Text>
+          <Text style={{flex:1}}>{rowData.zdf + '%'}</Text>
+          <Text style={{flex:1}}>{rowData.dde}</Text>
+        </View>
+    );
+  };
+
+  /**
+   * 渲染list头部
+   * @return {XML}
+   */
+  renderStockHeader= ()=>{
+    return (
+      <View>
+        <View style={{flexDirection:'row', alignItems:'center', height:30}}>
+          <Text style={{flex:1}}>名称</Text>
+          <Text style={{flex:1}}>代码</Text>
+          <Text style={{flex:1}}>涨跌幅</Text>
+          <Text style={{flex:1}}>DDE</Text>
+        </View>
+        <View style={gstyles.noMarginline}></View>
+      </View>
+    );
+  };
+
+  /**
    * 渲染当前条件的选股结果
    */
   renderStockResult= ()=>{
-
+    return (
+      <View>
+        <Text style={{margin:10, fontSize:16}}>选股结果</Text>
+        <ListView
+            style={{backgroundColor:'white', paddingHorizontal:10}}
+            renderHeader={this.renderStockHeader}
+            dataSource={this.state.stock_dataSource}
+            renderRow={this.renderStockResultRow}
+            renderSeparator={this.renderSeparator}
+        />
+      </View>
+    );
   };
 
   /**
    * 渲染历史交易结果
    */
-  renderTransationResult= ()=>{
+  renderTransactionResult= ()=>{
+    return (
+      <View>
+        <Text style={{margin:10, fontSize:16}}>历史交易结果</Text>
+        <ListView
+            style={{backgroundColor:'white', paddingHorizontal:10}}
+            renderHeader={this.renderTransactionHeader}
+            dataSource={this.state.transaction_dataSource}
+            renderRow={this.renderTransactionResultRow}
+            renderSeparator={this.renderSeparator}
+        />
+      </View>
+    );
+  };
 
+  renderTransactionHeader= ()=>{
+    return(
+      <View>
+        <View style={{flexDirection:'row', alignItems:'center', height:30}}>
+          <Text style={{flex:1}}>名称/代码</Text>
+          <Text style={{flex:1}}>买入/价格</Text>
+          <Text style={{flex:1}}>卖出/价格</Text>
+          <Text style={{flex:1}}>盈亏</Text>
+        </View>
+        <View style={gstyles.noMarginline}></View>
+      </View>
+    );
+  };
+
+  /**
+   * 渲染选股结果
+   * @param rowData
+   * @return {XML}
+   */
+  renderTransactionResultRow= (rowData)=>{
+    log('renderTransactionResultRow', rowData);
+    return (
+      <View style={{flexDirection:'row', alignItems:'center', height:50}}>
+        <View style={{flex:1}}>
+          <Text>{rowData.stock_name}</Text>
+          <Text>{rowData.stock_code}</Text>
+        </View>
+        <View style={{flex:1}}>
+          <Text>{rowData.bought_at}</Text>
+          <Text>{rowData.buying_price}</Text>
+        </View>
+        <View style={{flex:1}}>
+          <Text>{rowData.sold_at}</Text>
+          <Text>{rowData.selling_price}</Text>
+        </View>
+        <View style={{flex:1}}>
+          <Text>{rowData.signal_return_rate + '%'}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  renderSeparator= (sectionID, rowID)=>{
+    return (<View key={`${sectionID}-${rowID}`} style={gstyles.noMarginline}></View>);
   };
 
   render() {
@@ -174,12 +288,12 @@ export default class GoldHisPage extends React.Component {
               leftButtonIcon="md-arrow-back"
               onLeftButtonPress={()=>CommonUtil.naviGoBack(this.props.navigator)} />
 
-          <View style={gstyles.content}>
+          <ScrollView style={gstyles.content}>
             {this.renderResult()}
             {this.renderFilter()}
             {this.renderStockResult()}
-            {this.renderTransationResult()}
-          </View>
+            {this.renderTransactionResult()}
+          </ScrollView>
         </View>
     );
   }

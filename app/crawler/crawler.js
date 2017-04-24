@@ -60,7 +60,11 @@ export default crawler = {
 
     xhr.onreadystatechange = function () {
       if (this.readyState === this.DONE){
-        callback(JSON.parse(xhr.responseText));
+        try {
+          callback(JSON.parse(xhr.responseText));
+        } catch (e) {
+          e.print();
+        }
       }
     };
   },
